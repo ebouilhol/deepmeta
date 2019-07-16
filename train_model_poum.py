@@ -14,20 +14,21 @@ from random import sample
 from keras.utils import to_categorical
 from keras.callbacks import EarlyStopping
 import model
+import data
 
 
 #### Path ####
 
-#path_souris = "/home/achauviere/Bureau/DATA/Souris/"
-path_souris = "./DATA/Souris/"
-#path_mask = "/home/achauviere/Bureau/DATA/Masques/"
-path_mask = "./DATA/Masques/"
-#path_img = "/home/achauviere/Bureau/DATA/Image/"
-path_img = "./DATA/Image/"
-#path_lab = "/home/achauviere/Bureau/DATA/Label/"
-path_lab = "./DATA/Label/"
-#tab = pd.read_csv("/home/achauviere/Bureau/DATA/Tableau_General.csv").values
-tab = pd.read_csv("./DATA/Tableau_General.csv").values
+path_souris = "/home/achauviere/Bureau/DATA/Souris/"
+#path_souris = "./DATA/Souris/"
+path_mask = "/home/achauviere/Bureau/DATA/Masques/"
+#path_mask = "./DATA/Masques/"
+path_img = "/home/achauviere/Bureau/DATA/Image/"
+#path_img = "./DATA/Image/"
+path_lab = "/home/achauviere/Bureau/DATA/Label/"
+#path_lab = "./DATA/Label/"
+tab = pd.read_csv("/home/achauviere/Bureau/DATA/Tableau_General.csv").values
+#tab = pd.read_csv("./DATA/Tableau_General.csv").values
 
 
 
@@ -41,37 +42,15 @@ for k in np.arange(len(list_souris)):
 
 
 
-
 ####################################################################################
   ##################### MODELE 2D DETECTION + SEGMENTATION #####################
 ####################################################################################
 
 """
 Detection Poumons :
-    Chargement des images de souris annotées + amélioration du contraste
-    Chargement des masques + complétions par masque vide
 """
 
-
-list_img = utils.sorted_aphanumeric(os.listdir(path_img))
-
-data_seg = []
-label_seg = []
-ind_seg = []
-
-for i in np.arange(len(tab)):
-
-    if tab[i, 1] in numSouris:
-        im = io.imread(path_img + 'img_' + str(i) + '.tif', plugin='tifffile')
-        img_adapteq = exposure.equalize_adapthist(im, clip_limit=0.03)
-        data_seg.append(img_adapteq)
-        label_seg.append(tab[i, 3])
-        ind_seg.append(i)
-
-data_seg = np.array(data_seg)
-label_seg = np.array(label_seg)
-ind_seg = np.array(ind_seg)
-
+data_seg, label_seg, ind_seg = data.create_data_detect_poum(path_img, tab, numSouris)
 
 no = np.arange(len(ind_seg)) ; no_sample = sample(list(no), len(no))
 
@@ -88,24 +67,9 @@ model_detect.save('./2D_and_Multi2D/Detect_Seg/model_detect.h5')
 
 """
 Segmentation Poumons :
-    Chargement des Images et des Masques : que ceux où poumon == 1 sur csv.
 """
 
-data_2D = []
-label_2D = []
-ind_2D = []
-
-for i in np.arange(len(tab)):
-    if tab[i,4]==1:
-        im = io.imread(path_img + 'img_'+str(i)+'.tif', plugin='tifffile')
-        img_adapteq = exposure.equalize_adapthist(im, clip_limit=0.03)
-        data_2D.append(img_adapteq)
-        label_2D.append(io.imread(path_lab + 'm_'+str(i)+'.tif'))
-        ind_2D.append(i)
-
-data_2D = np.array(data_2D)
-label_2D = np.array(label_2D, dtype=np.bool)
-ind_2D = np.array(ind_2D)
+data_2D, label_2D, ind_2D = data.create_data_seg_poum(path_img,path_lab,tab)
 
 N = np.arange(len(ind_2D)) ; N_sample = sample(list(N), len(N))
 
@@ -123,8 +87,6 @@ model_seg.save('./2D_and_Multi2D/Detect_Seg/model_seg.h5')
 
 
 
-
-
 ####################################################################################
         ##################### MODELE 2D MULTI-AXES #####################
 ####################################################################################
@@ -135,41 +97,7 @@ Multi-Axes
     Chargement des masques + complétions par masque vide 
 """
 
-list_img = utils.sorted_aphanumeric(os.listdir(path_img))
-
-data_3D = []
-label_3D = []
-ind_3D = []
-
-for i in np.arange(len(tab)):
-    if tab[i, 1] in numSouris:
-        im = io.imread(path_img + 'img_' + str(i) + '.tif', plugin='tifffile')
-        img_adapteq = exposure.equalize_adapthist(im, clip_limit=0.03)
-        data_3D.append(img_adapteq)
-        ind_3D.append(i)
-        if tab[i, 4] == 1:
-            label_3D.append(io.imread(path_lab + 'm_' + str(i) + '.tif', plugin='tifffile'))
-        else:
-            label_3D.append(np.zeros((128, 128)))
-
-data_3D = np.array(data_3D)
-label_3D = np.array(label_3D)
-ind_3D = np.array(ind_3D)
-
-
-
-#Reconstruction en souris
-data_ = np.zeros((((len(numSouris),128,128,128))))
-label_ = np.zeros((((len(numSouris),128,128,128))))
-
-for i in np.arange(len(numSouris)):
-    data_[i] = data_3D[(128*i):(128*(i+1))]
-    label_[i] = label_3D[(128*i):(128*(i+1))]
-
-data_3D = data_
-label_3D = label_
-
-
+data_3D, label_3D, ind_3D = data.crate_data_3D(path_img, path_lab, tab, numSouris)
 
 #Data selon axe
 data_ax = []; data_sag = []; data_cor = []
@@ -227,3 +155,83 @@ model_corronal.fit(data_cor, label_cor, validation_split=0.2, batch_size=32, epo
                      callbacks=[earlystopper])
 #model_corronal.save('/home/achauviere/Bureau/2D_and_Multi2D/Multi_Axes_Seg/model_corronal.h5')
 model_corronal.save('./2D_and_Multi2D/Multi_Axes_Seg/model_corronal.h5')
+
+
+
+
+
+
+####################################################################################
+        ##################### MODELE RESNET #####################
+####################################################################################
+
+resnet = model.ResNet50(input_shape = (128, 128, 1))
+resnet.compile(optimizer='adam', loss='binary_crossentropy', metrics=[utils.mean_iou])
+
+
+
+
+
+
+
+####################################################################################
+        ##################### UNET PLUS PLUS #####################
+####################################################################################
+
+data_2D, label_2D, ind_2D = data.create_data_seg_poum(path_img,path_lab,tab)
+
+N = np.arange(len(ind_2D)) ; N_sample = sample(list(N), len(N))
+
+data_2D = data_2D.reshape(-1, 128,128, 1)[N_sample]
+label_2D = label_2D.reshape(-1,128,128,1)[N_sample]
+
+input_shape = (128,128,1)
+
+model_seg = model.unet_plusplus(input_shape)
+earlystopper = EarlyStopping(patience=5, verbose=1)
+model_seg.fit(data_2D, label_2D, validation_split=0.2, batch_size=32, epochs=50,callbacks=[earlystopper])
+model_seg.save('./2D_and_Multi2D/Detect_Seg/model_unet_plusplus.h5')
+
+
+
+
+
+
+
+
+####################################################################################
+    ##################### AMELIORATION AVEC CREATIVE DATA #####################
+####################################################################################
+
+
+
+########## MODELE 2D DETECTION + SEGMENTATION ##########
+
+
+"""
+Segmentation Poumons :
+"""
+
+# Charge les anciennes images
+data_2D, label_2D, ind_2D = data.create_data_seg_poum(path_img,path_lab,tab)
+
+# Charge les nouvelles images
+newData, newPoum, newMeta = data.recup_new_data()
+
+# On concatene le tout
+Data = utils.concat_data(data_2D,newData)
+MaskPoum = utils.concat_data(label_2D,newPoum)
+
+# Puis on procède comme précedemment
+N = np.arange(Data.shape[0]) ; N_sample = sample(list(N), len(N))
+
+Data = Data.reshape(-1, 128,128, 1)[N_sample]
+MaskPoum = MaskPoum.reshape(-1,128,128,1)[N_sample]
+
+input_shape = (128,128,1)
+
+model_seg = model.unet_plusplus(input_shape)
+earlystopper = EarlyStopping(patience=5, verbose=1)
+model_seg.fit(Data, MaskPoum, validation_split=0.2, batch_size=32, epochs=50,callbacks=[earlystopper])
+#model_seg.save('/home/achauviere/Bureau/2D_and_Multi2D/Detect_Seg/model_seg.h5')
+model_seg.save('./2D_and_Multi2D/Detect_Seg/model_seg.h5')

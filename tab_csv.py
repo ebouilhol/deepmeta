@@ -39,7 +39,7 @@ for i in np.arange(len(tab)):
     else :
         vect_num_meta[i] = 0
     if tab[i,2] == 127:
-            k = 0
+        k = 0
 
 
 #On fait le tableau avec un vecteur nul pour le nbr de méta
@@ -171,3 +171,31 @@ for k in numMeta :
             mask = np.zeros((128,128))
             cv2.imwrite(path_meta_train + "meta_"+str(ind3[i]) + '/masks' + "/m"+str(ind3[i])+'.tif', mask)
     n = n +1
+
+
+
+############ Créer jeu de données pour test ############
+
+n_souris = 8 ; n_img = 74 ; min = 21 ; max = 95 # Poumons petites métastases
+# n_souris = 28  # Poumons sains
+# n_souris = 56 ; n_img = 81 ; min = 28 ; max = 109 # Poumons grosses métastases
+
+## On charge les paths associés
+path_souris = "/home/achauviere/Bureau/DATA/Souris_Test/souris_"+str(n_souris)+".tif"
+path_msk = "/home/achauviere/Bureau/DATA/Souris_Test/masque_meta_"+str(n_souris)+"/"
+
+## On reconstruit la souris label
+list_msk = utils.sorted_aphanumeric(os.listdir(path_msk))
+
+data = np.zeros(((n_img,128,128)))
+
+for i in np.arange(len(list_msk)):
+    k = int(re.findall('\d+', list_msk[i])[0])
+    data[k-1] = data[k-1] + io.imread(path_msk + list_msk[i])
+
+seg_true = np.zeros(((128,128,128)))
+seg_true[min:max] = data
+
+for i in np.arange(128):
+    im = seg_true[i]
+    cv2.imwrite("/home/achauviere/Bureau/Meta8/m"+str(i)+".tif", im)
