@@ -158,19 +158,12 @@ model_corronal.save('./2D_and_Multi2D/Multi_Axes_Seg/model_corronal.h5')
 
 
 
-
-
-
 ####################################################################################
         ##################### MODELE RESNET #####################
 ####################################################################################
 
 resnet = model.ResNet50(input_shape = (128, 128, 1))
 resnet.compile(optimizer='adam', loss='binary_crossentropy', metrics=[utils.mean_iou])
-
-
-
-
 
 
 
@@ -193,9 +186,25 @@ model_seg.fit(data_2D, label_2D, validation_split=0.2, batch_size=32, epochs=50,
 model_seg.save('./2D_and_Multi2D/Detect_Seg/model_unet_plusplus.h5')
 
 
+####################################################################################
+        ##################### Small U-Net #####################
+####################################################################################
 
+data_2D, label_2D, ind_2D = data.create_data_seg_poum(path_img,path_lab,tab)
 
+N = np.arange(len(ind_2D)) ; N_sample = sample(list(N), len(N))
 
+data_2D = data_2D.reshape(-1, 128,128, 1)[N_sample]
+label_2D = label_2D.reshape(-1,128,128,1)[N_sample]
+
+input_shape = (128,128,1)
+
+#model_seg = model.small_unet(input_shape)
+model_seg = model.unetCoupe2Max(input_shape)
+earlystopper = EarlyStopping(patience=5, verbose=1)
+model_seg.fit(data_2D, label_2D, validation_split=0.2, batch_size=32, epochs=50,callbacks=[earlystopper])
+#model_seg.save('/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/small_unet.h5')
+model_seg.save('/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/unetCoupe2Max.h5')
 
 
 
@@ -235,3 +244,59 @@ earlystopper = EarlyStopping(patience=5, verbose=1)
 model_seg.fit(Data, MaskPoum, validation_split=0.2, batch_size=32, epochs=50,callbacks=[earlystopper])
 #model_seg.save('/home/achauviere/Bureau/2D_and_Multi2D/Detect_Seg/model_seg.h5')
 model_seg.save('./2D_and_Multi2D/Detect_Seg/model_seg.h5')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Intro BLSTM
+
+from random import random
+import numpy as np
+from keras.models import Sequential
+from keras.layers import LSTM, TimeDistributed, Dense, Bidirectional
+
+# create a sequence classification instance
+def get_sequence(n_timesteps):
+    X = np.array([random() for _ in range(n_timesteps)])
+    limit = n_timesteps/4.0
+    y = np.array([0 if x < limit else 1 for x in np.cumsum(X)])
+    X = X.reshape(1, n_timesteps, 1)
+    y = y.reshape(1, n_timesteps, 1)
+    return X, y
+
+n_timesteps = 10
+
+# define LSTM
+model = Sequential()
+model.add(Bidirectional(LSTM(20, input_shape=(10,1), return_sequences =True)))
+model.add(TimeDistributed(Dense(1, activation="sigmoid")))
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['acc'])
+
+# train LSTM
+for epoch in range(1000):
+    X, y = get_sequence(n_timesteps)
+    model.fit(X, y, epochs=1, batch_size=1, verbose=2)
+
+# evaluate LSTM
+X,y = get_sequence(n_timesteps)
+yhat = model.predict_classes(X, verbose=0)
+for i in range(n_timesteps):
+	print('Expected:', y[0, i], 'Predicted', yhat[0, i])

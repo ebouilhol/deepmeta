@@ -62,7 +62,7 @@ souris = utils.contraste_and_reshape(io.imread(path_souris, plugin='tifffile')[n
 
 for v in np.arange(souris.shape[0]):
 
-    # On choisit l'image à modifié :
+    # On choisit l'image à modifier :
     img_new = souris[v]*1
     mask_new = seg[v]*1
 

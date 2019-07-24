@@ -11,13 +11,13 @@ import numpy as np
 ######## Visualisation des features maps ########
 
 # On choisit une image :
-souris_28 = "/home/achauviere/Bureau/DATA/Souris_Test/souris_28.tif"
+souris_28 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_28.tif"
 data = utils.contraste_and_reshape(io.imread(souris_28))
 img = data[50]
 img = img.reshape(1,128,128,1)
 
 # On load le modele
-path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/model/model_seg.h5"
+path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/model_seg.h5"
 modele_seg = keras.models.load_model(path_model_seg, custom_objects={'mean_iou': utils.mean_iou})
 
 # Extracts the outputs of every layers
@@ -33,7 +33,7 @@ activations = activation_model.predict(img)
 
 # Représentation des Features maps
 layer_names = []
-for layer in modele_seg.layers[20:]:
+for layer in modele_seg.layers:
     layer_names.append(layer.name)  # Names of the layers, so you can have them as part of your plot
 
 images_per_row = 16

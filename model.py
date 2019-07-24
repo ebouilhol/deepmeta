@@ -581,3 +581,79 @@ def small_unet(input_shape):
     return model
 
 
+def unetCoupe2Max(input_shape):
+    """
+    :param input_shape: dimension des images en entrées, typiquement (128,128,1)
+    :return: Compile un réseau Small-UNET
+    """
+
+    inputs = Input(input_shape)
+
+    c1, p1 = block_down(inputs, filters=32, drop=0.1)
+    c2, p2 = block_down(p1, filters=64, drop=0.1)
+
+    o = bridge(p2, filters=128, drop=0.3)
+
+    u5 = block_up(o, [c2], filters=64, drop=0.1)
+    u6 = block_up(u5, [c1], filters=32, drop=0.1)
+
+    outputs = Conv2D(1, (1, 1), activation='sigmoid')(u6)
+
+    model = Model(inputs=[inputs], outputs=[outputs])
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=[utils.mean_iou])
+    return model
+
+
+
+#######################################################################
+      ####################### U-Net Lstm #######################
+#######################################################################
+
+
+def bclstm_unet(input_shape):
+
+    inputs = Input(input_shape)
+
+    c2 = TimeDistributed(Conv2D(32, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(inputs)
+    c2 = TimeDistributed(Dropout(0.1))(c2)
+    c2 = TimeDistributed(Conv2D(32, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(c2)
+    p2 = TimeDistributed(MaxPooling2D((2, 2)))(c2)
+
+    c3 = TimeDistributed(Conv2D(64, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(p2)
+    c3 = TimeDistributed(Dropout(0.2))(c3)
+    c3 = TimeDistributed(Conv2D(64, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(c3)
+    p3 = TimeDistributed(MaxPooling2D((2, 2)))(c3)
+
+    c4 = TimeDistributed(Conv2D(128, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(p3)
+    c4 = TimeDistributed(Dropout(0.2))(c4)
+    c4 = TimeDistributed(Conv2D(128, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(c4)
+    p4 = TimeDistributed(MaxPooling2D(pool_size=(2, 2)))(c4)
+
+    b1 = Bidirectional(ConvLSTM2D(128, (3, 3), activation='tanh', kernel_initializer='he_normal',
+                                  padding='same', return_sequences=True), merge_mode='concat')(p4)
+    b2 = Bidirectional(ConvLSTM2D(128, (3, 3), activation='tanh', kernel_initializer='he_normal',
+                                  padding='same', return_sequences=True), merge_mode='concat')(b1)
+
+    u6 = TimeDistributed(Conv2DTranspose(128, (2, 2), strides=(2, 2), padding='same'))(b2)
+    u6 = concatenate([u6, c4])
+    c6 = TimeDistributed(Conv2D(128, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(u6)
+    c6 = TimeDistributed(Dropout(0.2))(c6)
+    c6 = TimeDistributed(Conv2D(128, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(c6)
+
+    u7 = TimeDistributed(Conv2DTranspose(64, (2, 2), strides=(2, 2), padding='same'))(c6)
+    u7 = concatenate([u7, c3])
+    c7 = TimeDistributed(Conv2D(64, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(u7)
+    c7 = TimeDistributed(Dropout(0.2))(c7)
+    c7 = TimeDistributed(Conv2D(64, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(c7)
+
+    u8 = TimeDistributed(Conv2DTranspose(32, (2, 2), strides=(2, 2), padding='same'))(c7)
+    u8 = concatenate([u8, c2])
+    c8 = TimeDistributed(Conv2D(32, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(u8)
+    c8 = TimeDistributed(Dropout(0.1))(c8)
+    c8 = TimeDistributed(Conv2D(32, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(c8)
+
+    outputs = TimeDistributed(Conv2D(1, (1, 1), activation='sigmoid'))(c8)
+
+    model = Model(inputs=[inputs], outputs=[outputs])
+
+    return model

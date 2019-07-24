@@ -6,7 +6,8 @@ import tensorflow as tf
 from keras import backend as K
 from random import gauss
 from tensorflow.python import math_ops
-
+import os
+import model
 
 def sorted_aphanumeric(data):
     """
@@ -44,6 +45,13 @@ def contraste_and_reshape(souris):
         img_adapteq = exposure.equalize_adapthist(souris, clip_limit=0.03)
         img = np.array(img_adapteq).reshape(128, 128, 1)
         return(img)
+
+def calcul_numSouris(path_souris):
+    list_souris = sorted_aphanumeric(os.listdir(path_souris))
+    numSouris = []
+    for k in np.arange(len(list_souris)):
+        numSouris.append(int(re.findall('\d+', list_souris[k])[0]))
+    return numSouris
 
 
 def mean_iou(y_true, y_pred):
@@ -225,9 +233,6 @@ def stats_pixelbased(y_true, y_pred):
     recall = intersection.sum() / truth.sum()
     Fmeasure = (2 * precision * recall) / (precision + recall)
 
-
-
-
     return {
         'Dice': dice,
         'IoU': jaccard,
@@ -236,4 +241,24 @@ def stats_pixelbased(y_true, y_pred):
         'Fmeasure': Fmeasure
     }
 
+
+
+
+# def reshape_for_lstm(data_3D, shp):
+#     a = int(data_3D.shape[1] / shp)
+#     b = data_3D.shape[0]*a
+#     newData = np.zeros(((((b, shp, 128, 128, 1)))))
+#     i = 0
+#     for k in range(data_3D.shape[0]):
+#         c = shp*1
+#         j = 0
+#         while c < data_3D.shape[0]:
+#             newData[i] = data_3D[k,shp*j:shp*(j+1),:,:,:]
+#             i+=1
+#     return newData
+
+
+def moy_geom(a):
+    x_t = np.exp(1 / len(a) * np.sum(np.log(a)))
+    return x_t
 
