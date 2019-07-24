@@ -4,9 +4,9 @@ import numpy as np
 
 
 # Souris Test :
-souris_8 = "/home/achauviere/Bureau/DATA/Souris_Test/souris_8.tif"
-souris_22 = "/home/achauviere/Bureau/DATA/Souris_Test/souris_22.tif"
-souris_28 = "/home/achauviere/Bureau/DATA/Souris_Test/souris_28.tif"
+souris_8 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_8.tif"
+# souris_22 = "/home/achauviere/Bureau/DATA/Souris_Test/souris_22.tif"
+souris_28 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_28.tif"
 souris_56 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_56.tif"
 
 
@@ -226,10 +226,13 @@ model.methode_detect_seg(path_souris, path_model_detect, path_model_seg, path_re
 
 path_model_detect = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/model_detect.h5"
 #path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/small_unet.h5"
-path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/unetCoupe2Max.h5"
+#path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/unetCoupe2Max.h5"
+path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/unet_C2_Aug.h5"
 
-path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/results/Detect_Seg/Unet_Coupe/"
+#path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/results/Detect_Seg/Unet_Coupe/"
 #path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/results/Detect_Seg/Small_U-Net/"
+path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/results/Detect_Seg/Unet_C2_Aug/"
+
 
 path_souris = souris_8
 name_folder = "Souris_8"

@@ -7,8 +7,11 @@ from skimage import io
 
 
 path_unet = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/model_seg.h5"
-path_unet = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/model_seg.h5"
 path_unetCoupe2Max = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/unetCoupe2Max.h5"
+path_unet_C2_Aug = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/unet_C2_Aug.h5"
+path_unet_C2_Aug_Crea9 = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/unet_C2_Aug_Crea9.h5"
+
+
 
 def qualite_model(n_souris, path_model_seg):
 
@@ -56,9 +59,10 @@ def csv_qualite(list_result, list_label, n_souris, name_tab):
 # On récupère les IoU
 IoU_unet = qualite_model(56, path_unet)
 IoU_unetCoupe2Max = qualite_model(56, path_unetCoupe2Max)
-
+IoU_unet_C2_Aug = qualite_model(56, path_unet_C2_Aug)
+IoU_unet_C2_Aug_Crea9 = qualite_model(56, path_unet_C2_Aug_Crea9)
 
 # On sauvegarde le csv de comparaison
-list_result = [IoU_unet, IoU_unetCoupe2Max]
-list_label = ["Unet", "UnetCoupe2Max"]
-csv_qualite(list_result, list_label, 56, "Unet_vs_UnetMax2")
+list_result = [IoU_unet, IoU_unetCoupe2Max, IoU_unet_C2_Aug, IoU_unet_C2_Aug_Crea9]
+list_label = ["Unet", "UnetCoupe2Max", "IoU_unet_C2_Aug", "IoU_unet_C2_Aug_Crea9"]
+csv_qualite(list_result, list_label, 56, "Unet_vs_UnetMax2_and_Aug")

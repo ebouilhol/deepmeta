@@ -300,3 +300,5 @@ X,y = get_sequence(n_timesteps)
 yhat = model.predict_classes(X, verbose=0)
 for i in range(n_timesteps):
 	print('Expected:', y[0, i], 'Predicted', yhat[0, i])
+
+
