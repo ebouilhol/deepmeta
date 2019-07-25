@@ -6,11 +6,14 @@ from skimage import io, exposure
 import model
 from keras.callbacks import EarlyStopping
 import os
+import scipy
 
 path_data = "/home/achauviere/Bureau/DATA/"
 path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/stats/Batch_size/"
 
 ### Optimisation du batch size à utiliser pour le U-Net ###
+
+Result = np.zeros(((10,4,6))) #10 essais, 4 mesure, 6 batchsize
 
 for k in range(10):
 
@@ -64,11 +67,10 @@ for k in range(10):
         pred = (model_seg.predict(X_test) > 0.5).astype(np.uint8).reshape(X_test.shape[0], 128, 128)
         IoU = [utils.stats_pixelbased(y_test[j], pred[j]).get('IoU') for j in np.arange(X_test.shape[0])]
 
-        Result = np.zeros(((10,4,6))) #10 essais, 4 mesure, 6 batchsize
         Result[k, 0, j] = np.mean(IoU)
         Result[k, 1, j] = np.median(IoU)
         Result[k, 2, j] = np.var(IoU)
-        Result[k, 3, j] = utils.moy_geom(IoU)
+        Result[k, 3, j] = scipy.stats.mstats.gmean(IoU)
 
 label = ["Mean", "Median", "Var", "Moy_Geom"]
 

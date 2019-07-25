@@ -10,10 +10,10 @@ path_unet = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/model_se
 path_unetCoupe2Max = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/unetCoupe2Max.h5"
 path_unet_C2_Aug = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/unet_C2_Aug.h5"
 path_unet_C2_Aug_Crea9 = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/unet_C2_Aug_Crea9.h5"
+path_unet_C2_Aug_wm149 = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/unet_C2_Aug_wm149.h5"
 
 
-
-def qualite_model(n_souris, path_model_seg):
+def qualite_model(n_souris, path_model_seg, wei=None):
 
     path_souris = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_"+str(n_souris)+".tif"
     path_souris_annoter = "/home/achauviere/Bureau/DATA/Souris_Test/Masque_Poumons/masque_"+str(n_souris)+"/"
@@ -34,7 +34,7 @@ def qualite_model(n_souris, path_model_seg):
 
     # Segmentation prédite
     detect, seg = model.methode_detect_seg(path_souris, path_model_detect, path_model_seg, path_result,
-                                           name_folder, mask=True, visu_seg=None, wei=None)
+                                           name_folder, mask=True, visu_seg=None, wei=wei)
     seg_pred = seg[detect_annot]
 
     # Calcul IoU
@@ -61,8 +61,10 @@ IoU_unet = qualite_model(56, path_unet)
 IoU_unetCoupe2Max = qualite_model(56, path_unetCoupe2Max)
 IoU_unet_C2_Aug = qualite_model(56, path_unet_C2_Aug)
 IoU_unet_C2_Aug_Crea9 = qualite_model(56, path_unet_C2_Aug_Crea9)
+IoU_unet_C2_Aug_wm149 = qualite_model(56, path_unet_C2_Aug_wm149, wei=True)
+
 
 # On sauvegarde le csv de comparaison
-list_result = [IoU_unet, IoU_unetCoupe2Max, IoU_unet_C2_Aug, IoU_unet_C2_Aug_Crea9]
-list_label = ["Unet", "UnetCoupe2Max", "IoU_unet_C2_Aug", "IoU_unet_C2_Aug_Crea9"]
+list_result = [IoU_unet, IoU_unetCoupe2Max, IoU_unet_C2_Aug, IoU_unet_C2_Aug_Crea9, IoU_unet_C2_Aug_wm149]
+list_label = ["Unet", "UnetCoupe2Max", "Unet_C2_Aug", "Unet_C2_Aug_Crea9", "Unet_C2_Aug_wm149"]
 csv_qualite(list_result, list_label, 56, "Unet_vs_UnetMax2_and_Aug")

@@ -111,10 +111,7 @@ model_seg2.save('/home/achauviere/Bureau/Annotation_Meta/Result/Modele/unet_test
     ##################### AMELIORATION AVEC CREATIVE DATA #####################
 ####################################################################################
 
-
-
-########## Segmentation des Meta - UNET - Image originale ##########
-
+##Image originale
 
 Data, Label, ind = data.create_data_meta(path_img, path_lab, tab)
 
@@ -137,3 +134,6 @@ earlystopper = EarlyStopping(patience=5, verbose=1)
 model_seg.fit(Data, MaskMeta, validation_split=0.2, batch_size=32, epochs=70,callbacks=[earlystopper])
 
 model_seg.save('/home/achauviere/Bureau/Annotation_Meta/Result/Modele/unet_creative_diceloss.h5')
+
+
+

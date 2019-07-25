@@ -266,13 +266,12 @@ def seg_meta_original(path_souris, path_model_seg_meta, path_result, name_folder
     souris = io.imread(path_souris, plugin='tifffile')
     data = utils.contraste_and_reshape(souris)
 
-
     if not wei:
         model_seg = keras.models.load_model(path_model_seg_meta, custom_objects={'mean_iou': utils.mean_iou})
 
     else:
         model_seg = keras.models.load_model(path_model_seg_meta,
-                                             custom_objects={'weighted_cross_entropy': utils.weighted_cross_entropy})
+                                            custom_objects={'weighted_cross_entropy': utils.weighted_cross_entropy})
 
     seg = (model_seg.predict(data) > 0.5).astype(np.uint8).reshape(128, 128, 128)
     data = data.reshape(128, 128, 128)
