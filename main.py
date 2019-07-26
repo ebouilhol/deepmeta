@@ -251,6 +251,7 @@ model.methode_detect_seg(path_souris, path_model_detect, path_model_seg, path_re
 
 
 
+######### Cnn-Lstm  #########
 
 
 

@@ -4,7 +4,6 @@
 ########################################################################################################################
 ########################################################################################################################
 
-import utils
 import os
 import numpy as np
 import pandas as pd
@@ -15,6 +14,7 @@ from keras.utils import to_categorical
 from keras.callbacks import EarlyStopping
 import model
 import data
+import utils
 
 
 #### Path ####

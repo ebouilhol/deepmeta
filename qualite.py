@@ -5,7 +5,6 @@ import os
 import numpy as np
 from skimage import io
 
-
 path_unet = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/model_seg.h5"
 path_unetCoupe2Max = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/unetCoupe2Max.h5"
 path_unet_C2_Aug = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/unet_C2_Aug.h5"
@@ -32,13 +31,14 @@ def qualite_model(n_souris, path_model_seg, wei=None):
     y = [io.imread(path_souris_annoter + list_msk[i], plugin="tifffile") for i in np.arange(len(list_msk))]
     seg_true = np.array(y, dtype='bool')
 
+
     # Segmentation prédite
     detect, seg = model.methode_detect_seg(path_souris, path_model_detect, path_model_seg, path_result,
-                                           name_folder, mask=True, visu_seg=None, wei=wei)
+                                               name_folder, mask=True, visu_seg=None, wei=wei)
     seg_pred = seg[detect_annot]
 
     # Calcul IoU
-    IoU = [utils.stats_pixelbased(seg_true[j], seg_pred[j]).get('IoU') for j in np.arange(n)]
+    IoU = [utils.stats_pixelbased(seg_true[j], seg_pred[j]).get('IoU') for j in range(n)]
 
     return IoU
 
@@ -62,7 +62,6 @@ IoU_unetCoupe2Max = qualite_model(56, path_unetCoupe2Max)
 IoU_unet_C2_Aug = qualite_model(56, path_unet_C2_Aug)
 IoU_unet_C2_Aug_Crea9 = qualite_model(56, path_unet_C2_Aug_Crea9)
 IoU_unet_C2_Aug_wm149 = qualite_model(56, path_unet_C2_Aug_wm149, wei=True)
-
 
 # On sauvegarde le csv de comparaison
 list_result = [IoU_unet, IoU_unetCoupe2Max, IoU_unet_C2_Aug, IoU_unet_C2_Aug_Crea9, IoU_unet_C2_Aug_wm149]

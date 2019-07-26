@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import re
 import numpy as np
 import logging
@@ -7,12 +9,12 @@ from keras import backend as K
 from random import gauss
 from tensorflow.python import math_ops
 import os
-import model
+#import model
 
 def sorted_aphanumeric(data):
     """
-    :param data: list d'élément alphanumérique.
-    :return: list triée dans l'ordre croissant alphanumérique.
+    :param data: list d'element alphanumerique.
+    :return: list triee dans l'ordre croissant alphanumerique.
     """
     convert = lambda text: int(text) if text.isdigit() else text.lower()
     alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ]
@@ -21,8 +23,8 @@ def sorted_aphanumeric(data):
 
 def intersection(lst1, lst2):
     """
-    :param lst1: list d'éléments.
-    :param lst2: list d'éléments.
+    :param lst1: list d'elements.
+    :param lst2: list d'elements.
     :return: intersection de ses deux listes.
     """
     lst3 = [value for value in lst1 if value in lst2]
@@ -31,8 +33,8 @@ def intersection(lst1, lst2):
 
 def contraste_and_reshape(souris):
     """
-    :param souris: Ensemble d'image, vérification si ensemble ou image unique avec la condition if.
-    :return: Ensemble d'image avec contraste amélioré et shape modifié pour entrer dans le réseaux.
+    :param souris: Ensemble d'image, verification si ensemble ou image unique avec la condition if.
+    :return: Ensemble d'image avec contraste ameliore et shape modifie pour entrer dans le reseaux.
     """
     if len(souris.shape) > 2:
         data = []
@@ -56,8 +58,8 @@ def calcul_numSouris(path_souris):
 
 def mean_iou(y_true, y_pred):
     """
-    :param y_true: array de label annoté.
-    :param y_pred: array de label prédit par le modèle.
+    :param y_true: array de label annote.
+    :param y_pred: array de label predit par le modele.
     :return: valeur de l'IoU.
     """
     prec = []
