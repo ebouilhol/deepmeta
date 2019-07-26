@@ -267,23 +267,27 @@ model.methode_detect_seg(path_souris, path_model_detect, path_model_seg, path_re
 
 ######### Application UNET - Image original  #########
 
-souris_8 = "/home/achauviere/Bureau/DATA/Souris_Test/souris_8.tif"
-souris_28 = "/home/achauviere/Bureau/DATA/Souris_Test/souris_28.tif"
-souris_56 = "/home/achauviere/Bureau/DATA/Souris_Test/souris_56.tif"
+souris_8 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_8.tif"
+souris_28 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_28.tif"
+souris_56 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_56.tif"
 
 #path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_test.h5"
 #path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_creative.h5"
 #path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/weight_map149.h5"
 #path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/weight_map11050.h5"
 #path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/weight_map_creative149.h5"
-path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/weight_map_creative11050.h5"
+#path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/weight_map_creative11050.h5"
+#path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final.h5"
+path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_coupe.h5"
+
 
 #path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Test_Unet/Image_Normale/"
 #path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Test_Unet_Creat/Image_Normale/"
 #path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Weight_Map/wm_149/"
 #path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Weight_Map/wm_11050/"
 #path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Weight_Map/wm_crea149/"
-path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Weight_Map/wm_crea11050/"
+#path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Unet_final/"
+path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Unet_final_coupe/"
 
 name_folder = "souris_8"
 model.seg_meta_original(souris_8, path_model_seg_meta, path_result, name_folder)

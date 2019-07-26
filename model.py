@@ -659,20 +659,20 @@ def bclstm_unet(input_shape):
 
 
 
-def seg_poum_lstm(path_souris, path_model_detect, path_model_seg):
+def seg_poum_lstm(path_souris, path_model_detect, path_model_seg, time):
 
     souris = io.imread(path_souris, plugin='tifffile')
     data = utils.contraste_and_reshape(souris)
 
     model_detect = keras.models.load_model(path_model_detect)
-    detect = model_detect.predict_classes(data)
+    detect = model_detect.predict_classes(data)[0:int(128/time)*time]
 
     model_bclstm = keras.models.load_model(path_model_seg, custom_objects={'mean_iou': utils.mean_iou})
 
-    Data = data[0:126].reshape(42, 3, 128, 128, 1)
-    pred = (model_bclstm.predict(Data) > 0.5).astype(np.uint8).reshape(126, 128, 128)
+    Data = data[0:int(128/time)*time].reshape(int(128/time), time, 128, 128, 1)
+    pred = (model_bclstm.predict(Data) > 0.5).astype(np.uint8).reshape(int(128/time)*time, 128, 128)
 
-    return pred
+    return detect, pred
 
 
 
