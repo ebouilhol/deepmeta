@@ -28,7 +28,7 @@ def qualite_model(n_souris, path_model_seg, time, wei=None):
     tab = pd.read_csv("./DATA/Tableau_General.csv").values
     path_result = "..."
     name_folder = "..."
-    path_model_detect = "./Antoine_Git/Poumons/model/model_detect.h5"
+    path_model_detect = "./Poumons/model/model_detect.h5"
 
     # Detection label
     tab2 = tab[np.where(tab[:,1]==n_souris)]
@@ -66,7 +66,7 @@ def csv_qualite(list_result, list_label, n_souris, name_tab):
     df = pd.DataFrame(Result, columns=list_label)
     # df.to_csv("/home/achauviere/PycharmProjects/Antoine_Git/Poumons/stats"
     #           "/Souris_" + str(n_souris) + "/" + name_tab+".csv", index=None, header=True)
-    df.to_csv("./Antoine_Git/Poumons/stats"
+    df.to_csv("./Poumons/stats"
               "/Souris_" + str(n_souris) + "/" + name_tab + ".csv", index=None, header=True)
 
 
@@ -105,7 +105,7 @@ for num in [8,28,56] :
 
     for t in time :
         # path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/lstm/bclstm_" + str(t) + ".h5"
-        path_model_seg = "./Antoine_Git/Poumons/model/lstm/bclstm_" + str(t) + ".h5"
+        path_model_seg = "./Poumons/model/lstm/bclstm_" + str(t) + ".h5"
         IoU = qualite_model(num, path_model_seg, t)
         list_result.append(IoU)
         list_label.append("time_"+str(t))
