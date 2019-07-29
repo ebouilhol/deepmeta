@@ -278,7 +278,9 @@ souris_56 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_56.tif"
 #path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/weight_map_creative149.h5"
 #path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/weight_map_creative11050.h5"
 #path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final.h5"
-path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_coupe.h5"
+#path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_coupe.h5"
+path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_w24.h5"
+
 
 
 #path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Test_Unet/Image_Normale/"
@@ -287,16 +289,18 @@ path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/m
 #path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Weight_Map/wm_11050/"
 #path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Weight_Map/wm_crea149/"
 #path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Unet_final/"
-path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Unet_final_coupe/"
+#path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Unet_final_coupe/"
+path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Unet_final_w24/"
+
 
 name_folder = "souris_8"
-model.seg_meta_original(souris_8, path_model_seg_meta, path_result, name_folder)
+model.seg_meta_original(souris_8, path_model_seg_meta, path_result, name_folder, wei=True)
 
 name_folder = "souris_28"
-model.seg_meta_original(souris_28, path_model_seg_meta, path_result, name_folder)
+model.seg_meta_original(souris_28, path_model_seg_meta, path_result, name_folder, wei=True)
 
 name_folder = "souris_56"
-model.seg_meta_original(souris_56, path_model_seg_meta, path_result, name_folder)
+model.seg_meta_original(souris_56, path_model_seg_meta, path_result, name_folder, wei=True)
 
 
 

@@ -264,3 +264,18 @@ def moy_geom(a):
     x_t = np.exp(1 / len(a) * np.sum(np.log(a)))
     return x_t
 
+#optim wei
+from skimage import io
+def conc3D(a,b):
+    r = a.shape[0] + b.shape[0]
+    z = np.zeros(((r,128,128)))
+    for i in np.arange(a.shape[0]):
+        z[i] = a[i]
+    for j in np.arange(b.shape[0]):
+        z[(a.shape[0]+j)] = b[j]
+    return z
+
+def give_img(path, name, val_min, val_max):
+    souris = io.imread(path + name)
+    x = souris[val_min-1:val_max]
+    return x
