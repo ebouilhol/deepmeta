@@ -106,6 +106,79 @@ import keras
 
 
 
+# def qualite_meta(n_souris, path_model_seg, wei=None):
+#     path_souris = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_" + str(n_souris) + ".tif"
+#     path_msk = "/home/achauviere/Bureau/DATA/Souris_Test/Masque_Metas/Meta_" + str(n_souris) + "/"
+#     path_result = "..."
+#     name_folder = "..."
+#
+#     ## On reconstruit la souris label
+#     list_msk = utils.sorted_aphanumeric(os.listdir(path_msk))
+#     seg_true = np.zeros(((128, 128, 128)))
+#     for i in np.arange(len(list_msk)):
+#         seg_true[i] = io.imread(path_msk + list_msk[i], plugin="tifffile")
+#     seg_true = np.array(seg_true, dtype='bool')
+#
+#     ## On prédit
+#     seg_pred = model.seg_meta_original(path_souris, path_model_seg, path_result, name_folder, mask=True,
+#                                        visu_seg=False, wei=wei)
+#
+#     ## On calcule l'IoU pour chaque image
+#     IoU = [utils.stats_pixelbased(seg_true[j], seg_pred[j]).get('IoU') for j in np.arange(128)]
+#     return IoU
+#
+# def csv_meta(list_result, list_label, n_souris, name_tab):
+#
+#     Result = np.zeros((len(list_result[0]), len(list_result)))
+#
+#     for i in np.arange(len(list_result)):
+#         Result[:, i] = list_result[i]
+#
+#     df = pd.DataFrame(Result, columns=list_label)
+#     df.to_csv("/home/achauviere/PycharmProjects/Antoine_Git/Metastases/stats"
+#               "/Souris_" + str(n_souris) + "/"+name_tab+".csv", index=None, header=True)
+
+
+# # Path model
+# # path_unet = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_test.h5'
+# # path_crea = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_creative.h5'
+# path_unet_final = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final.h5'
+# # path_unet_final_coupe = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_coupe.h5'
+# # path_unet_final_pp = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_pluspus.h5'
+# path_unet_final_w24 = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_w24.h5'
+#
+#
+# for num in [8,28,56]:
+#
+#     # On récupère les IoU
+#     IoU_unet_final = qualite_meta(num, path_unet_final)
+#     IoU_unet_final_w24 = qualite_meta(num, path_unet_final_w24, wei=True)
+#
+#     # On sauvegarde le csv de comparaison
+#     list_result = [IoU_unet_final, IoU_unet_final_w24]
+#     list_label = ["Unet_final", "Unet_final_w24"]
+#     csv_meta(list_result, list_label, num, "Unet_final_w24")
+
+########################################################################################################################
+
+## Boucle Weight :
+
+import data
+from random import sample
+from keras_preprocessing import image
+from skimage import exposure
+from keras.callbacks import EarlyStopping
+
+path_souris = "/home/achauviere/Bureau/Annotation_Meta/Metastases/Souris/"
+path_mask = "/home/achauviere/Bureau/Annotation_Meta/Metastases/Masques/"
+path_img = "/home/achauviere/Bureau/Annotation_Meta/Metastases/Image/"
+path_lab = "/home/achauviere/Bureau/Annotation_Meta/Metastases/Label/"
+tab = pd.read_csv("/home/achauviere/Bureau/Annotation_Meta/Tableau.csv").values
+
+path_il34c = "/home/achauviere/Bureau/Data/Data/iL34_1c/"
+path_lacz = "/home/achauviere/Bureau/Data/Data/LacZ/"
+path_res = ""
+
 def qualite_meta(n_souris, path_model_seg, wei=None):
     path_souris = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_" + str(n_souris) + ".tif"
     path_msk = "/home/achauviere/Bureau/DATA/Souris_Test/Masque_Metas/Meta_" + str(n_souris) + "/"
@@ -138,46 +211,6 @@ def csv_meta(list_result, list_label, n_souris, name_tab):
     df.to_csv("/home/achauviere/PycharmProjects/Antoine_Git/Metastases/stats"
               "/Souris_" + str(n_souris) + "/"+name_tab+".csv", index=None, header=True)
 
-
-# Path model
-# path_unet = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_test.h5'
-# path_crea = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_creative.h5'
-path_unet_final = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final.h5'
-# path_unet_final_coupe = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_coupe.h5'
-# path_unet_final_pp = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_pluspus.h5'
-path_unet_final_w24 = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_w24.h5'
-
-
-for num in [8,28,56]:
-
-    # On récupère les IoU
-    IoU_unet_final = qualite_meta(num, path_unet_final)
-    IoU_unet_final_w24 = qualite_meta(num, path_unet_final_w24, wei=True)
-
-    # On sauvegarde le csv de comparaison
-    list_result = [IoU_unet_final, IoU_unet_final_w24]
-    list_label = ["Unet_final", "Unet_final_w24"]
-    csv_meta(list_result, list_label, num, "Unet_final_w24")
-
-########################################################################################################################
-
-## Boucle Weight :
-
-import data
-from random import sample
-from keras_preprocessing import image
-from skimage import exposure
-from keras.callbacks import EarlyStopping
-
-path_souris = "/home/achauviere/Bureau/Annotation_Meta/Metastases/Souris/"
-path_mask = "/home/achauviere/Bureau/Annotation_Meta/Metastases/Masques/"
-path_img = "/home/achauviere/Bureau/Annotation_Meta/Metastases/Image/"
-path_lab = "/home/achauviere/Bureau/Annotation_Meta/Metastases/Label/"
-tab = pd.read_csv("/home/achauviere/Bureau/Annotation_Meta/Tableau.csv").values
-
-path_il34c = "/home/achauviere/Bureau/Data/Data/iL34_1c/"
-path_lacz = "/home/achauviere/Bureau/Data/Data/LacZ/"
-path_res =
 
 Data, Label, ind = data.create_data_meta(path_img, path_lab, tab)
 N = np.arange(len(ind)) ; N_sample = sample(list(N), len(N))
@@ -243,3 +276,24 @@ for i in range(len(a)):
     earlystopper = EarlyStopping(patience=5, verbose=1)
     model_seg.fit(Data, y, validation_split=0.2, batch_size=8, epochs=70, callbacks=[earlystopper])
     model_seg.save(path_res + '/unet_final_w'+str(a[i])+str(b[i])+'.h5')
+
+
+for num in [8,28,56]:
+    # On récupère les IoU
+    IoU_unet_final_w22 = qualite_meta(num, path_res + '/unet_final_w'+str(2)+str(2)+'.h5', wei=True)
+    IoU_unet_final_w24 = qualite_meta(num, path_res + '/unet_final_w' + str(2) + str(4) + '.h5', wei=True)
+    IoU_unet_final_w33 = qualite_meta(num, path_res + '/unet_final_w' + str(3) + str(3) + '.h5', wei=True)
+    IoU_unet_final_w39 = qualite_meta(num, path_res + '/unet_final_w' + str(3) + str(9) + '.h5', wei=True)
+    IoU_unet_final_w1010 = qualite_meta(num, path_res + '/unet_final_w' + str(10) + str(10) + '.h5', wei=True)
+    IoU_unet_final_w1020 = qualite_meta(num, path_res + '/unet_final_w' + str(10) + str(20) + '.h5', wei=True)
+    IoU_unet_final_w2020 = qualite_meta(num, path_res + '/unet_final_w' + str(20) + str(20) + '.h5', wei=True)
+    IoU_unet_final_w2040 = qualite_meta(num, path_res + '/unet_final_w' + str(20) + str(40) + '.h5', wei=True)
+    IoU_unet_final_w5050 = qualite_meta(num, path_res + '/unet_final_w' + str(50) + str(50) + '.h5', wei=True)
+
+
+    # On sauvegarde le csv de comparaison
+    list_result = [IoU_unet_final_w22, IoU_unet_final_w24, IoU_unet_final_w33, IoU_unet_final_w39, IoU_unet_final_w1010,
+                   IoU_unet_final_w1020, IoU_unet_final_w2020, IoU_unet_final_w2040, IoU_unet_final_w5050]
+    list_label = ["Unet_final", "Unet_final_w24", "Unet_final_w33", "Unet_final_w39", "Unet_final_w1010",
+                  "Unet_final_w1020", "Unet_final_w2020", "Unet_final_w2040", "Unet_final_w5050"]
+    csv_meta(list_result, list_label, num, "Unet_Comparaison_Weight")
