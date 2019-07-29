@@ -42,7 +42,7 @@ def qualite_model(n_souris, path_model_seg, time, wei=None):
 
 
     # Segmentation prédite
-    if time==0:
+    if time == 0:
         detect, seg = model.methode_detect_seg(path_souris, path_model_detect, path_model_seg, path_result,
                                                name_folder, mask=True, visu_seg=None, wei=wei)
     else:
