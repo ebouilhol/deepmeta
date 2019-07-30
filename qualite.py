@@ -15,7 +15,7 @@ from keras.callbacks import EarlyStopping
                             ######################## POUMONS ########################
 ########################################################################################################################
 
-def qualite_model(n_souris, path_model_seg, time, wei=None):
+def qualite_model(num, path_model_seg, time, wei=None):
 
     # path_souris = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_"+str(n_souris)+".tif"
     # path_souris_annoter = "/home/achauviere/Bureau/DATA/Souris_Test/Masque_Poumons/masque_"+str(n_souris)+"/"
@@ -23,15 +23,15 @@ def qualite_model(n_souris, path_model_seg, time, wei=None):
     # path_result = "..."
     # name_folder = "..."
     # path_model_detect = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/model_detect.h5"
-    path_souris = "../DATA/Souris_Test/Souris/souris_" + str(n_souris) + ".tif"
-    path_souris_annoter = "../DATA/Souris_Test/Masque_Poumons/masque_" + str(n_souris) + "/"
+    path_souris = "../DATA/Souris_Test/Souris/souris_" + str(num) + ".tif"
+    path_souris_annoter = "../DATA/Souris_Test/Masque_Poumons/masque_" + str(num) + "/"
     tab = pd.read_csv("../DATA/Tableau_General.csv").values
     path_result = "..."
     name_folder = "..."
     path_model_detect = "../Poumons/model/model_detect.h5"
 
     # Detection label
-    tab2 = tab[np.where(tab[:,1]==n_souris)]
+    tab2 = tab[np.where(tab[:,1]==num)]
     detect_annot = tab2[:,2][np.where(tab2[:,3]==1)]
     n = len(detect_annot)
 
@@ -56,7 +56,7 @@ def qualite_model(n_souris, path_model_seg, time, wei=None):
 
 
 
-def csv_qualite(list_result, list_label, n_souris, name_tab):
+def csv_qualite(list_result, list_label, num, name_tab):
 
     Result = np.zeros((len(list_result[0]), len(list_result)))
 
@@ -67,7 +67,7 @@ def csv_qualite(list_result, list_label, n_souris, name_tab):
     # df.to_csv("/home/achauviere/PycharmProjects/Antoine_Git/Poumons/stats"
     #           "/Souris_" + str(n_souris) + "/" + name_tab+".csv", index=None, header=True)
     df.to_csv("../Poumons/stats"
-              "/Souris_" + str(n_souris) + "/" + name_tab + ".csv", index=None, header=True)
+              "/Souris_" + str(num) + "/" + name_tab + ".csv", index=None, header=True)
 
 
 # # Path
@@ -96,22 +96,23 @@ def csv_qualite(list_result, list_label, n_souris, name_tab):
 
 
 # for num in [8,28,56] :
-num = 56
+n_souris = 56
 
 # path_souris = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_" + str(num) + ".tif"
-path_souris = "../DATA/Souris_Test/Souris/souris_" + str(num) + ".tif"
+path_souris = "../DATA/Souris_Test/Souris/souris_" + str(n_souris) + ".tif"
 list_result = []
 list_label = []
-time = [3, 6, 9, 12, 16, 32, 64, 128]
+# time = [3, 6, 9, 12, 16, 32, 64, 128]
 
-for t in time :
-    # path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/lstm/bclstm_" + str(t) + ".h5"
-    path_model_seg = "../Poumons/model/lstm/bclstm_" + str(t) + ".h5"
-    IoU = qualite_model(num, path_model_seg, t)
-    list_result.append(IoU)
-    list_label.append("time_"+str(t))
-    print(t)
-csv_qualite(list_result, list_label, num, "Lstm")
+# for t in time :
+t = 3
+# path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/lstm/bclstm_" + str(t) + ".h5"
+path_model_seg = "../Poumons/model/lstm/bclstm_" + str(t) + ".h5"
+IoU = qualite_model(n_souris, path_model_seg, t)
+list_result.append(IoU)
+list_label.append("time_"+str(t))
+print(t)
+csv_qualite(list_result, list_label, n_souris, "Lstm")
 
 
 
@@ -188,39 +189,6 @@ csv_qualite(list_result, list_label, num, "Lstm")
 # path_il34c = "/home/achauviere/Bureau/Data/Data/iL34_1c/"
 # path_lacz = "/home/achauviere/Bureau/Data/Data/LacZ/"
 # path_res = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results"
-#
-# def qualite_meta(n_souris, path_model_seg, wei=None):
-#     path_souris = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_" + str(n_souris) + ".tif"
-#     path_msk = "/home/achauviere/Bureau/DATA/Souris_Test/Masque_Metas/Meta_" + str(n_souris) + "/"
-#     path_result = "..."
-#     name_folder = "..."
-#
-#     ## On reconstruit la souris label
-#     list_msk = utils.sorted_aphanumeric(os.listdir(path_msk))
-#     seg_true = np.zeros(((128, 128, 128)))
-#     for i in np.arange(len(list_msk)):
-#         seg_true[i] = io.imread(path_msk + list_msk[i], plugin="tifffile")
-#     seg_true = np.array(seg_true, dtype='bool')
-#
-#     ## On prédit
-#     seg_pred = model.seg_meta_original(path_souris, path_model_seg, path_result, name_folder, mask=True,
-#                                        visu_seg=False, wei=wei)
-#
-#     ## On calcule l'IoU pour chaque image
-#     IoU = [utils.stats_pixelbased(seg_true[j], seg_pred[j]).get('IoU') for j in np.arange(128)]
-#     return IoU
-#
-# def csv_meta(list_result, list_label, n_souris, name_tab):
-#
-#     Result = np.zeros((len(list_result[0]), len(list_result)))
-#
-#     for i in np.arange(len(list_result)):
-#         Result[:, i] = list_result[i]
-#
-#     df = pd.DataFrame(Result, columns=list_label)
-#     df.to_csv("/home/achauviere/PycharmProjects/Antoine_Git/Metastases/stats"
-#               "/Souris_" + str(n_souris) + "/"+name_tab+".csv", index=None, header=True)
-#
 #
 # a = [2, 2, 3, 3, 10, 10, 20, 20, 50]
 # b = [2, 4, 3, 9, 10, 20, 20, 40, 50]
