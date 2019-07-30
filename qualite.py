@@ -101,7 +101,7 @@ n_souris = 56
 path_souris = "../DATA/Souris_Test/Souris/souris_" + str(n_souris) + ".tif"
 list_result = []
 list_label = []
-time = [3, 6, 9, 12, 16, 32, 64, 128]
+time = [3, 6, 9, 12, 16, 32, 64]
 
 for t in time :
     # path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/lstm/bclstm_" + str(t) + ".h5"
