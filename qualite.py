@@ -34,12 +34,13 @@ def qualite_model(num, path_model_seg, time, wei=None):
     tab2 = tab[np.where(tab[:,1]==num)]
     detect_annot = tab2[:,2][np.where(tab2[:,3]==1)]
     n = len(detect_annot)
+    print(n)
 
     # Segmentation label
     list_msk = utils.sorted_aphanumeric(os.listdir(path_souris_annoter))
     y = [io.imread(path_souris_annoter + list_msk[i], plugin="tifffile") for i in np.arange(len(list_msk))]
     seg_true = np.array(y, dtype='bool')
-
+    print(seg_true.shape)
 
     # Segmentation prédite
     if time == 0:
@@ -48,7 +49,7 @@ def qualite_model(num, path_model_seg, time, wei=None):
     else:
         detect, seg = model.seg_poum_lstm(path_souris, path_model_detect, path_model_seg, time)
     seg_pred = seg[detect_annot]
-
+    print(seg_pred.shape)
     # Calcul IoU
     IoU = [utils.stats_pixelbased(seg_true[j], seg_pred[j]).get('IoU') for j in range(n)]
 
