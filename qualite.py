@@ -33,14 +33,12 @@ def qualite_model(num, path_model_seg, time, wei=None):
     # Detection label
     tab2 = tab[np.where(tab[:,1]==num)]
     detect_annot = tab2[:,2][np.where(tab2[:,3]==1)]
-    n = len(detect_annot) - 1
-    print(n)
+    n = len(detect_annot) # -1 pour Souris 56 ( surement erreur dans annotation )
 
     # Segmentation label
     list_msk = utils.sorted_aphanumeric(os.listdir(path_souris_annoter))
     y = [io.imread(path_souris_annoter + list_msk[i], plugin="tifffile") for i in np.arange(len(list_msk))]
     seg_true = np.array(y, dtype='bool')
-    print(seg_true.shape)
 
     # Segmentation prédite
     if time == 0:
@@ -49,7 +47,7 @@ def qualite_model(num, path_model_seg, time, wei=None):
     else:
         detect, seg = model.seg_poum_lstm(path_souris, path_model_detect, path_model_seg, time)
     seg_pred = seg[detect_annot]
-    print(seg_pred.shape)
+
     # Calcul IoU
     IoU = [utils.stats_pixelbased(seg_true[j], seg_pred[j]).get('IoU') for j in range(n)]
 
@@ -107,12 +105,11 @@ time = [3, 6, 9, 12, 16, 32, 64, 128]
 
 for t in time :
     # path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/lstm/bclstm_" + str(t) + ".h5"
-    path_model_seg = "../Poumons/model/lstm/bclstm_" + str(t) + ".h5"
+    path_model_seg = "../Poumons/model/lstm/bclstm_" + str(t) + "_tl.h5"
     IoU = qualite_model(n_souris, path_model_seg, t)
     list_result.append(IoU)
     list_label.append("time_"+str(t))
-    print(t)
-csv_qualite(list_result, list_label, n_souris, "Lstm")
+csv_qualite(list_result, list_label, n_souris, "Lstm_tl")
 
 
 
