@@ -33,7 +33,7 @@ def qualite_model(num, path_model_seg, time, wei=None):
     # Detection label
     tab2 = tab[np.where(tab[:,1]==num)]
     detect_annot = tab2[:,2][np.where(tab2[:,3]==1)]
-    n = len(detect_annot)
+    n = len(detect_annot) - 1
     print(n)
 
     # Segmentation label
