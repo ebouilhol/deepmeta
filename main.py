@@ -279,8 +279,8 @@ souris_56 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_56.tif"
 #path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/weight_map_creative11050.h5"
 #path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final.h5"
 #path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_coupe.h5"
-path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_w24.h5"
-
+#path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_w24.h5"
+path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_w2040.h5"
 
 
 #path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Test_Unet/Image_Normale/"
@@ -290,7 +290,7 @@ path_model_seg_meta = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/m
 #path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Weight_Map/wm_crea149/"
 #path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Unet_final/"
 #path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Unet_final_coupe/"
-path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Unet_final_w24/"
+path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Metastases/results/Unet_final_w2040/"
 
 
 name_folder = "souris_8"

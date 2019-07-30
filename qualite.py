@@ -95,21 +95,23 @@ def csv_qualite(list_result, list_label, n_souris, name_tab):
 # Lstm
 
 
-for num in [8,28,56] :
+# for num in [8,28,56] :
+num = 56
 
-    # path_souris = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_" + str(num) + ".tif"
-    path_souris = "../DATA/Souris_Test/Souris/souris_" + str(num) + ".tif"
-    list_result = []
-    list_label = []
-    time = [3, 6, 9, 12, 16, 32, 64, 128]
+# path_souris = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_" + str(num) + ".tif"
+path_souris = "../DATA/Souris_Test/Souris/souris_" + str(num) + ".tif"
+list_result = []
+list_label = []
+time = [3, 6, 9, 12, 16, 32, 64, 128]
 
-    for t in time :
-        # path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/lstm/bclstm_" + str(t) + ".h5"
-        path_model_seg = "../Poumons/model/lstm/bclstm_" + str(t) + ".h5"
-        IoU = qualite_model(num, path_model_seg, t)
-        list_result.append(IoU)
-        list_label.append("time_"+str(t))
-    csv_qualite(list_result, list_label, num, "Lstm")
+for t in time :
+    # path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/lstm/bclstm_" + str(t) + ".h5"
+    path_model_seg = "../Poumons/model/lstm/bclstm_" + str(t) + ".h5"
+    IoU = qualite_model(num, path_model_seg, t)
+    list_result.append(IoU)
+    list_label.append("time_"+str(t))
+    print(t)
+csv_qualite(list_result, list_label, num, "Lstm")
 
 
 
@@ -158,20 +160,19 @@ for num in [8,28,56] :
 # path_unet_final = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final.h5'
 # # path_unet_final_coupe = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_coupe.h5'
 # # path_unet_final_pp = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_pluspus.h5'
-# path_unet_final_w24 = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_w24.h5'
+# path_unet_final_w2040 = '/home/achauviere/PycharmProjects/Antoine_Git/Metastases/model/unet_final_w2040.h5'
 #
 #
 # for num in [8, 28, 56]:
 #
 #     # On récupère les IoU
 #     IoU_unet_final = qualite_meta(num, path_unet_final)
-#     IoU_unet_final_w24 = qualite_meta(num, path_unet_final_w24, wei=True)
+#     IoU_unet_final_w2040 = qualite_meta(num, path_unet_final_w2040, wei=True)
 #
 #     # On sauvegarde le csv de comparaison
-#     list_result = [IoU_unet_final, IoU_unet_final_w24]
-#     list_label = ["Unet_final", "Unet_final_w24"]
-#     csv_meta(list_result, list_label, num, "Unet_final_w24")
-#
+#     list_result = [IoU_unet_final, IoU_unet_final_w2040]
+#     list_label = ["Unet_final", "Unet_final_w2040"]
+#     csv_meta(list_result, list_label, num, "Unet_final_w2040")
 #
 #
 #
@@ -290,20 +291,20 @@ for num in [8,28,56] :
 #
 # for num in [8,28,56]:
 #     # On récupère les IoU
-#     IoU_unet_final_w22 = qualite_meta(num, path_res + 'unet_final_w'+str(2)+str(2)+'.h5', wei=True)
-#     IoU_unet_final_w24 = qualite_meta(num, path_res + 'unet_final_w' + str(2) + str(4) + '.h5', wei=True)
-#     IoU_unet_final_w33 = qualite_meta(num, path_res + 'unet_final_w' + str(3) + str(3) + '.h5', wei=True)
-#     IoU_unet_final_w39 = qualite_meta(num, path_res + 'unet_final_w' + str(3) + str(9) + '.h5', wei=True)
-#     IoU_unet_final_w1010 = qualite_meta(num, path_res + 'unet_final_w' + str(10) + str(10) + '.h5', wei=True)
-#     IoU_unet_final_w1020 = qualite_meta(num, path_res + 'unet_final_w' + str(10) + str(20) + '.h5', wei=True)
-#     IoU_unet_final_w2020 = qualite_meta(num, path_res + 'unet_final_w' + str(20) + str(20) + '.h5', wei=True)
-#     IoU_unet_final_w2040 = qualite_meta(num, path_res + 'unet_final_w' + str(20) + str(40) + '.h5', wei=True)
-#     IoU_unet_final_w5050 = qualite_meta(num, path_res + 'unet_final_w' + str(50) + str(50) + '.h5', wei=True)
+#     IoU_unet_final_w22 = qualite_meta(num, path_res + '/unet_final_w'+str(2)+str(2)+'.h5', wei=True)
+#     IoU_unet_final_w24 = qualite_meta(num, path_res + '/unet_final_w' + str(2) + str(4) + '.h5', wei=True)
+#     IoU_unet_final_w33 = qualite_meta(num, path_res + '/unet_final_w' + str(3) + str(3) + '.h5', wei=True)
+#     IoU_unet_final_w39 = qualite_meta(num, path_res + '/unet_final_w' + str(3) + str(9) + '.h5', wei=True)
+#     IoU_unet_final_w1010 = qualite_meta(num, path_res + '/unet_final_w' + str(10) + str(10) + '.h5', wei=True)
+#     IoU_unet_final_w1020 = qualite_meta(num, path_res + '/unet_final_w' + str(10) + str(20) + '.h5', wei=True)
+#     IoU_unet_final_w2020 = qualite_meta(num, path_res + '/unet_final_w' + str(20) + str(20) + '.h5', wei=True)
+#     IoU_unet_final_w2040 = qualite_meta(num, path_res + '/unet_final_w' + str(20) + str(40) + '.h5', wei=True)
+#     IoU_unet_final_w5050 = qualite_meta(num, path_res + '/unet_final_w' + str(50) + str(50) + '.h5', wei=True)
 #
 #
 #     # On sauvegarde le csv de comparaison
 #     list_result = [IoU_unet_final_w22, IoU_unet_final_w24, IoU_unet_final_w33, IoU_unet_final_w39, IoU_unet_final_w1010,
 #                    IoU_unet_final_w1020, IoU_unet_final_w2020, IoU_unet_final_w2040, IoU_unet_final_w5050]
-#     list_label = ["Unet_final", "Unet_final_w24", "Unet_final_w33", "Unet_final_w39", "Unet_final_w1010",
+#     list_label = ["Unet_final_w22,", "Unet_final_w24", "Unet_final_w33", "Unet_final_w39", "Unet_final_w1010",
 #                   "Unet_final_w1020", "Unet_final_w2020", "Unet_final_w2040", "Unet_final_w5050"]
 #     csv_meta(list_result, list_label, num, "Unet_Comparaison_Weight")
