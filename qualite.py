@@ -103,16 +103,15 @@ n_souris = 56
 path_souris = "../DATA/Souris_Test/Souris/souris_" + str(n_souris) + ".tif"
 list_result = []
 list_label = []
-# time = [3, 6, 9, 12, 16, 32, 64, 128]
+time = [3, 6, 9, 12, 16, 32, 64, 128]
 
-# for t in time :
-t = 3
-# path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/lstm/bclstm_" + str(t) + ".h5"
-path_model_seg = "../Poumons/model/lstm/bclstm_" + str(t) + ".h5"
-IoU = qualite_model(n_souris, path_model_seg, t)
-list_result.append(IoU)
-list_label.append("time_"+str(t))
-print(t)
+for t in time :
+    # path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/lstm/bclstm_" + str(t) + ".h5"
+    path_model_seg = "../Poumons/model/lstm/bclstm_" + str(t) + ".h5"
+    IoU = qualite_model(n_souris, path_model_seg, t)
+    list_result.append(IoU)
+    list_label.append("time_"+str(t))
+    print(t)
 csv_qualite(list_result, list_label, n_souris, "Lstm")
 
 
