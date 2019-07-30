@@ -33,7 +33,7 @@ def qualite_model(num, path_model_seg, time, wei=None):
     # Detection label
     tab2 = tab[np.where(tab[:,1]==num)]
     detect_annot = tab2[:,2][np.where(tab2[:,3]==1)]
-    n = len(detect_annot) -1 # -1 pour Souris 56 ( surement erreur dans annotation )
+    n = len(detect_annot)  # -1 pour Souris 56 ( surement erreur dans annotation )
 
     # Segmentation label
     list_msk = utils.sorted_aphanumeric(os.listdir(path_souris_annoter))
@@ -94,22 +94,22 @@ def csv_qualite(list_result, list_label, num, name_tab):
 # Lstm
 
 
-# for num in [8,28,56] :
-n_souris = 56
+for n_souris in [8,28] :
+# n_souris = 56
 
-# path_souris = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_" + str(num) + ".tif"
-path_souris = "../DATA/Souris_Test/Souris/souris_" + str(n_souris) + ".tif"
-list_result = []
-list_label = []
-time = [3, 6, 9, 12, 16, 32, 64]
+    # path_souris = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_" + str(num) + ".tif"
+    path_souris = "../DATA/Souris_Test/Souris/souris_" + str(n_souris) + ".tif"
+    list_result = []
+    list_label = []
+    time = [3, 6, 9, 12, 16, 32, 64]
 
-for t in time :
-    # path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/lstm/bclstm_" + str(t) + ".h5"
-    path_model_seg = "../Poumons/model/lstm/bclstm_" + str(t) + "_tl.h5"
-    IoU = qualite_model(n_souris, path_model_seg, t)
-    list_result.append(IoU)
-    list_label.append("time_"+str(t))
-csv_qualite(list_result, list_label, n_souris, "Lstm_tl")
+    for t in time :
+        # path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/lstm/bclstm_" + str(t) + ".h5"
+        path_model_seg = "../Poumons/model/lstm/bclstm_" + str(t) + "_tl.h5"
+        IoU = qualite_model(n_souris, path_model_seg, t)
+        list_result.append(IoU)
+        list_label.append("time_"+str(t))
+    csv_qualite(list_result, list_label, n_souris, "Lstm_tl")
 
 
 
