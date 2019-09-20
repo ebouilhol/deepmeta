@@ -1,22 +1,34 @@
 import model
 import utils
-from skimage import io
 import numpy as np
 import os
-from random import randint
 import re
-import matplotlib.pyplot as plt
-from random import choice
+import sys
 import cv2
+from random import randint, choice
+from skimage import io
 
+
+ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/") # dans mon cas.
+sys.path.append(ROOT_DIR)
+
+# PATH_poum_sain_seg = "./Poumon_sain_seg/"
+PATH_poum_sain_seg = os.path.join(ROOT_DIR, "./Poumon_sain_seg/")
+
+# PATH_meta = "./Annotation_Meta/"
+PATH_meta = os.path.join(ROOT_DIR, "./Annotation_Meta/")
+
+# PATH_Data = "./Data/"
+PATH_Data = os.path.join(ROOT_DIR, "./Data/")
+
+# PATH_GIT = "./Antoine_Git/"
+PATH_GIT = os.path.join(ROOT_DIR, "./Antoine_Git/")
 
 ##########################################################################################
             ######### Creation de données métastasées pour une Souris  #########
 ##########################################################################################
 
-
-
-#Paramètre Initiaux :
+# Souris :
 #name_souris = "Souris_24" ; ident = "2Pc_day22"
 #name_souris = "Souris_26" ; ident = "2Pc_day36"
 #name_souris = "Souris_28" ; ident = "2Pc_day50"
@@ -27,30 +39,30 @@ import cv2
 #name_souris = "Souris_38" ; ident = "2Pc_day120"
 name_souris = "Souris_39" ; ident = "2Pc_day127"
 
-
+# Paramètres :
 taille_min_poumon = 150
 taille_min_meta = 0*255
 taille_max_meta = 35*255
 possibilite = [6,8,10,12,14,16]
 
+# Path :
+path_full_meta = os.path.join(PATH_poum_sain_seg, "Full_Meta/")
+path_img = os.path.join(PATH_meta, "Metastases/Image/")
+path_souris = os.path.join(PATH_Data, "iL34_1c/" + ident +".tif")
+path_model_detect = os.path.join(PATH_GIT, "model/model_detect.h5")
+path_model_seg = os.path.join(PATH_GIT, "model/model_seg.h5")
 
-
-path_full_meta = "/home/achauviere/Bureau/Poumon_sain_seg/Full_Meta/"
-path_img = "/home/achauviere/Bureau/Annotation_Meta/Metastases/Image/"
-path_souris = "/home/achauviere/Bureau/Data/Data/iL34_1c/" + ident +".tif"
-path_model_detect = "/home/achauviere/PycharmProjects/Antoine_Git/model/model_detect.h5"
-path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/model/model_seg.h5"
-path_result = "/home/achauviere/Bureau/"
+path_result = "None"  # On récupère juste valeur des masques dans un premier temps (visu_seg=False).
 name_folder = "None"
 
-path_result_souris = "/home/achauviere/Bureau/Poumon_sain_seg/Nouvelles_Images/"+name_souris
+path_result_souris = os.path.join(PATH_poum_sain_seg, "Nouvelles_Images/"+name_souris)
 
 if not os.path.exists(path_result_souris):
     os.makedirs(path_result_souris)
 
-os.mkdir(path_result_souris+"/Images/")
-os.mkdir(path_result_souris+"/Masque_Poum/")
-os.mkdir(path_result_souris+"/Masque_Meta/")
+os.mkdir(path_result_souris + "/Images/")
+os.mkdir(path_result_souris + "/Masque_Poum/")
+os.mkdir(path_result_souris + "/Masque_Meta/")
 
 # On récupère la détection des Poumons et leur Masque
 detect, seg = model.methode_detect_seg(path_souris, path_model_detect, path_model_seg, path_result, name_folder,

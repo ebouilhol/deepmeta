@@ -4,7 +4,6 @@ import re
 import numpy as np
 import utils
 import data
-import cv2
 
 path_souris = "/home/achauviere/Bureau/DATA/Souris/"
 path_mask = "/home/achauviere/Bureau/DATA/Masques/"

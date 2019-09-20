@@ -9,7 +9,10 @@ from keras import backend as K
 from random import gauss
 from tensorflow.python import math_ops
 import os
-#import model
+from skimage import io
+
+
+####### Ensemble des fonctions utiles pour la création des différents script #######
 
 def sorted_aphanumeric(data):
     """
@@ -49,6 +52,10 @@ def contraste_and_reshape(souris):
         return(img)
 
 def calcul_numSouris(path_souris):
+    """
+    :param path_souris: path vers le dossier contenant des images de souris .tif
+    :return: une liste contenant le numéro de chaque souris
+    """
     list_souris = sorted_aphanumeric(os.listdir(path_souris))
     numSouris = []
     for k in np.arange(len(list_souris)):
@@ -75,9 +82,9 @@ def mean_iou(y_true, y_pred):
 
 def apply_mask(img, mask):
     """
-    :param img:
-    :param mask:
-    :return:
+    :param img: image originale 128x128
+    :param mask: masque 128x128 d'un objet de l'image originale
+    :return: image 128x128 après application du masque
     """
     im = np.zeros((128,128))
     for i in np.arange(128):
@@ -90,9 +97,10 @@ def apply_mask(img, mask):
 
 def apply_mask_and_noise(img, mask, noise):
     """
-    :param img:
-    :param mask:
-    :return:
+    :param img: image originale 128x128
+    :param mask: masque 128x128 d'un objet de l'image originale
+    :param noise: intensité de pixel entre 0 et 255
+    :return: image 128x128 après application du masque et zone masquée bruitée
     """
     im = np.zeros((128,128))
     for i in np.arange(128):
@@ -105,26 +113,52 @@ def apply_mask_and_noise(img, mask, noise):
 
 
 def etale_hist(img):
+    """
+    :param img: image originale 128x128
+    :return: image avec intensité des pixels compris entre 0 et 1
+    """
     new_img = (img - img.min())*255/(img.max()-img.min())
     return new_img
 
 
 def concat_data(a,b):
+    """
+    :param a: ensemble de x images 128x128
+    :param b: ensemble de y images 128x128
+    :return: ensemble concaténé de x+y images 128x128
+    """
     new = np.zeros(((np.shape(a)[0]+np.shape(b)[0],128,128)))
     new[0:np.shape(a)[0]] = a
     new[np.shape(a)[0]:(np.shape(a)[0]+np.shape(b)[0])] = b
     return new
 
+# def conc3D(a,b):
+#
+#     r = a.shape[0] + b.shape[0]
+#     z = np.zeros(((r,128,128)))
+#     for i in np.arange(a.shape[0]):
+#         z[i] = a[i]
+#     for j in np.arange(b.shape[0]):
+#         z[(a.shape[0]+j)] = b[j]
+#     return z
 
 def inverse_binary_mask(msk):
+    """
+    :param msk: masque binaire 128x128
+    :return: masque avec binarisation inversée 128x128
+    """
     new_mask = np.ones((128,128)) - msk
     return new_mask
 
 
 def weight_map(label,a,b):
     """
-    :param label: stack label
-    :return: stack weight per slice
+    Création du carte de poids définissant une valeur d'importance pour chaque pixel
+    Les pixels n'appartenant pas au masque ont une valeur de poids définit à 1 par défaut
+    :param label: ensemble de x masque label 128x128
+    :param a: valeur du poids pour pixel appartenant au maque
+    :param b: valeur du poids pour pixel appartenant au contour du maque
+    :return: ensemble de y weight map 128x128
     """
     weight = np.zeros(((label.shape[0], 128, 128)))
 
@@ -149,23 +183,13 @@ def weight_map(label,a,b):
     return(weight)
 
 
-
-# def weighted_cross_entropy(beta):
-#
-#     def convert_to_logits(y_pred):
-#         y_pred = tf.clip_by_value(y_pred, tf.keras.backend.epsilon(), 1 - tf.keras.backend.epsilon())
-#         return tf.log(y_pred / (1 - y_pred))
-#
-#     def loss(y_true,y_pred):
-#         y_pred = convert_to_logits(y_pred)
-#         loss = tf.nn.weighted_cross_entropy_with_logits(logits=y_pred, targets=y_true, pos_weight=beta)
-#         return tf.reduce_mean(loss)
-#
-#     return loss
-
-
-
 def weighted_cross_entropy(y_true, y_pred):
+    """
+    -- Fonction de coût pondéré --
+    :param y_true: vrai valeur de y (label)
+    :param y_pred: valeur prédite de y par le modèle
+    :return: valeur de la fonction de cout d'entropie croisée pondérée
+    """
     try:
         [seg, weight] = tf.unstack(y_true, 2, axis=3)
 
@@ -243,39 +267,15 @@ def stats_pixelbased(y_true, y_pred):
         'Fmeasure': Fmeasure
     }
 
-
-
-
-# def reshape_for_lstm(data_3D, shp):
-#     a = int(data_3D.shape[1] / shp)
-#     b = data_3D.shape[0]*a
-#     newData = np.zeros(((((b, shp, 128, 128, 1)))))
-#     i = 0
-#     for k in range(data_3D.shape[0]):
-#         c = shp*1
-#         j = 0
-#         while c < data_3D.shape[0]:
-#             newData[i] = data_3D[k,shp*j:shp*(j+1),:,:,:]
-#             i+=1
-#     return newData
-
-
-def moy_geom(a):
-    x_t = np.exp(1 / len(a) * np.sum(np.log(a)))
-    return x_t
-
-#optim wei
-from skimage import io
-def conc3D(a,b):
-    r = a.shape[0] + b.shape[0]
-    z = np.zeros(((r,128,128)))
-    for i in np.arange(a.shape[0]):
-        z[i] = a[i]
-    for j in np.arange(b.shape[0]):
-        z[(a.shape[0]+j)] = b[j]
-    return z
-
 def give_img(path, name, val_min, val_max):
+    """
+    Permet d'obtenir l'ensemble des slices du souris dans un intervalle
+    :param path: path du dossier contenant les souris .tif
+    :param name: nom de la souris .tif
+    :param val_min: borne inférieure de l'intervalle
+    :param val_max: borne supérieure de l'intervalle
+    :return:
+    """
     souris = io.imread(path + name)
     x = souris[val_min-1:val_max]
     return x

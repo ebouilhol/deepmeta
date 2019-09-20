@@ -31,14 +31,8 @@ tab = pd.read_csv("/home/achauviere/Bureau/DATA/Tableau_General.csv").values
 #tab = pd.read_csv("./DATA/Tableau_General.csv").values
 
 
-
-
 #### Ensemble de Souris présente pour l'entrainement ####
-list_souris = utils.sorted_aphanumeric(os.listdir(path_souris))
-numSouris = []
-for k in np.arange(len(list_souris)):
-    numSouris.append(int(re.findall('\d+',list_souris[k])[0]))
-
+numSouris = utils.calcul_numSouris(path_souris)
 
 
 

@@ -38,6 +38,7 @@ def model_detection():
 def model_unet_2D(input_shape, wei=False):
     """
     :param input_shape: dimension des images en entrées, typiquement (128,128,1)
+    :param wei: utilisation ou non des weight map pour entrainer le modèle
     :return: Compile un réseau U-NET
     """
 
@@ -104,19 +105,21 @@ def model_unet_2D(input_shape, wei=False):
 def methode_detect_seg(path_souris, path_model_detect, path_model_seg, path_result,
                        name_folder, mask=None, full_souris=True, visu_seg=True, img=None, wei=False):
     """
+    Méthode 2D qui permet de segmenter les poumons slice par slice. La segmentation est enfin ajustée grâce au modèle
+    de détection (si le modèle ne détecte pas de poumons alors le masque est vide)
     -------------------------------------------------------------------------------------------------------------------
-    :param path_souris: image.tif étant un ensemble de stack
-    :param path_model_detect: modèle de detection de slice pour les poumons format h5
-    :param path_model_seg: modèle de segmentation des poumons format h5
+    :param path_souris: image.tif étant un ensemble de slices
+    :param path_model_detect: modèle de detection de slices pour les poumons - format h5
+    :param path_model_seg: modèle de segmentation des poumons - format h5
     :param path_result: chemin où sauvegarder le résultat (path/)
-    :param name_folder: nom du dossier où stocker les résultats
+    :param name_folder: nom du dossier où sauvegarder les résultats
     :param mask: si True alors retourne les prédictions de détection ainsi que la valeur des masques associés
     :param full_souris: True correspond à Souris 3D.tiff sinon ensemble de slices.tiff
     :param visu_seg: True correspond à la sauvegarde des contours sur les images
-    :param wei: modèle avec poids modifiés
+    :param wei: utilisation d'un modèle avec poids modifiés
     -------------------------------------------------------------------------------------------------------------------
-    :return: Ensemble d'image avec contour des poumons segmentéssi visu
-    :return: Retourne les prédictions de détection ainsi que la valeur des masques associés si mask
+    :return: Ensemble des slices d'une image avec contour des poumons segmentés (si visu==True)
+    :return: Retourne les prédictions de détection ainsi que la valeur des masques associés (si mask==True)
     -------------------------------------------------------------------------------------------------------------------
     """
 
@@ -337,6 +340,7 @@ def seg_meta_poum_seg(path_souris, path_model_seg_poum, path_model_seg_meta, pat
 ####################### ResNET #######################
 #####################################################################
 
+## Je n'ai pas utilisé le ResNet mais cela peut être intéressant de le considérer comme backbone pour le U-Net.
 
 def identity_block(X, f, filters, stage, block):
     """
@@ -676,3 +680,89 @@ def seg_poum_lstm(path_souris, path_model_detect, path_model_seg, time):
 
 
 
+
+
+
+
+
+def methode_detect_seg_2(path_souris, path_model_detect, path_model_seg, path_model_seg_meta, path_result,
+                       name_folder, mask=None, full_souris=True, visu_seg=True, img=None, wei=False):
+
+    if full_souris:
+        souris = io.imread(path_souris, plugin='tifffile')
+
+    else:
+        slices_list = utils.sorted_aphanumeric(os.listdir(path_souris))
+        s = np.zeros(((len(slices_list), 128, 128)))
+        for i in np.arange(len(slices_list)):
+            s[i] = io.imread(path_souris + slices_list[i])
+        souris = np.array(s)
+
+    data = utils.contraste_and_reshape(souris)
+
+    model_detect = keras.models.load_model(path_model_detect)
+
+    if not wei:
+        modele_seg = keras.models.load_model(path_model_seg, custom_objects={'mean_iou': utils.mean_iou})
+    else:
+        modele_seg = keras.models.load_model(path_model_seg,
+                                             custom_objects={'weighted_cross_entropy': utils.weighted_cross_entropy})
+
+    model_seg_meta = keras.models.load_model(path_model_seg_meta, custom_objects={'mean_iou': utils.mean_iou})
+
+    detect = model_detect.predict_classes(data)
+    seg = (modele_seg.predict(data) > 0.5).astype(np.uint8).reshape(128, 128, 128)
+    seg_meta = (model_seg_meta.predict(data) > 0.5).astype(np.uint8).reshape(128, 128, 128)
+    data = data.reshape(128, 128, 128)
+
+    if visu_seg:
+
+        if not os.path.exists(path_result + str(name_folder)):
+            os.makedirs(path_result + str(name_folder))
+
+        for k in np.arange(128):
+            cell_contours = measure.find_contours(seg[k], 0.8)
+            cell_contours2 = measure.find_contours(seg_meta[k], 0.8)
+
+            fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(10, 10))
+            for n, contour in enumerate(cell_contours):
+                ax.plot(contour[:, 1], contour[:, 0], linewidth=1, color='red')
+            for n, contour in enumerate(cell_contours2):
+                ax.plot(contour[:, 1], contour[:, 0], linewidth=1, color='green')
+            plt.xlim((0, 128))
+            plt.ylim((128, 0))
+            plt.imshow(data[k], cmap='gray');
+            plt.savefig(path_result + str(name_folder) + "/m_" + str(k) + ".png")
+            plt.close(fig)
+
+    if mask:
+        ind = np.where(detect == 1)
+        return detect, seg#[ind]
+
+
+
+
+
+
+def visu_souris(path_souris, path_result, name_folder):
+
+
+    souris = io.imread(path_souris, plugin='tifffile')
+    data = utils.contraste_and_reshape(souris)
+
+    data = data.reshape(128, 128, 128)
+
+    os.makedirs(path_result + str(name_folder))
+
+    for k in np.arange(128):
+        fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(10, 10))
+
+        plt.xlim((0, 128))
+        plt.ylim((128, 0))
+        plt.imshow(data[k], cmap='gray');
+        plt.savefig(path_result + str(name_folder) + "/m_" + str(k) + ".png")
+        plt.close(fig)
+
+souris_8 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_8.tif"
+souris_28 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_28.tif"
+souris_56 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_56.tif"
