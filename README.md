@@ -15,6 +15,6 @@ Il est possible de définir trois types d'image :
 * Souris en fin de maladie : de grosses métastases matures présentes dans les poumons.
 
 Nous disposons en tout de : 
-* 87 images de souris = 11 136 slices. 
+* 87 images de souris = 11136 slices. 
 * 27 souris annotées pour la segmentation des poumons => 2128 slices présentants des poumons. 
 * 8 souris annotées pour la segmentation des métastases => 620 slices présentants des poumons et 387 d'entres elles présentent des métastases
