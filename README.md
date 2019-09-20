@@ -3,7 +3,7 @@ Ce projet à pour but de construire des modèles de segmentation automatique d'i
 métastases pulmonaires dans le cas du petit animal, la souris. 
 
 ## Données
-Les données sont des images IRM 3D 128x128x128 voxels, acquises par le RMSB, et représente l'état de la maladie d'une souris 
+Les données sont des images IRM 3D 128x128x128 voxels, acquises par le RMSB, et représentent l'état de la maladie d'une souris 
 à un instant donné. 
 
 Les images peuvent être visualiser à l'aide du logiciel Fiji et sous différents axes (axial, coronal ou sagittal). 
