@@ -45,9 +45,14 @@ L'architecture de ce dossier est la suivante :
   * Label : ensemble des masques associées.
   * Souris_Test : 3 souris avec respectivement des poumons sains, des petites métastases et des grosses métastases. Les masques de ces souris sont présents pour les poumons et les métastases dans les dossiers Masque.
   * Tableau_General.csv : Tableau qui résume les caractéristiques des images que j'ai jugé utile de créer (pour la segmentation des poumons)
-* Data_contraste
+
+* Annotation_Meta :
+  * Métastases
+
 * Poumon_sain_seg
-* Annotation_Meta
+
+
+* Data_contraste
 
 
 ## Scripts 
