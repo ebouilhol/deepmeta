@@ -16,10 +16,13 @@ Il est possible de définir trois types d'image :
 * Souris en début de maladie : plusieurs petites métastases présentes dans les poumons.
 * Souris en fin de maladie : de grosses métastases matures présentes dans les poumons.
 
-Nous disposons en tout de : 
+Nous disposons pour l'entrainement des réseaux de : 
 * 87 images de souris = 11136 slices. 
 * 27 souris annotées pour la segmentation des poumons => 2128 slices présentants des poumons. 
 * 8 souris annotées pour la segmentation des métastases => 620 slices présentants des poumons et 387 d'entres elles présentent des métastases
+
+Pour le test : 
+* 3 souris annotées pour la segmentation des poumons et des métastases. 
 
 ## Projet
 Le dossier du projet est disponible sur /mnt/cbib/Projet_Detection_Metastase_Souris. Pour le récuperer : 
@@ -30,12 +33,18 @@ scp -r adresse_connexion_serveur_ssh:/mnt/cbib/Projet_Detection_Metastase_Souris
 
 L'architecture de ce dossier est la suivante : 
 
-*Projet_Detection_Metastase_Souris*
+**Projet_Detection_Metastase_Souris**
 * Antoine_Git : 
   * Ensemble des script python (présentés dans la partie suivante) 
   * Poumons et Métastases : les modèles construits, résultats de segmentation et statistique sur les résultats.
 * Data : L'ensemble des données brutes acquis par le RMSB contenant deux groupes de souris iL34_1c et LacZ.
 * DATA : 
+ * Souris : souris.tif qui ont été annotés pour la segmentation des poumons.
+ * Masque : dossier contenant les masques des poumons pour les souris annotées.
+ * Image : ensemble des slices du dossier Souris.
+ * Label : ensemble des masques associées.
+ * Souris_Test : 3 souris avec respectivement des poumons sains, des petites métastases et des grosses métastases. Les masques de ces souris sont présents pour les poumons et les métastases dans les dossiers Masque.
+ * Tableau_General.csv : Tableau qui résume les caractéristiques des images que j'ai jugé utile de créer (pour la segmentation des poumons)
 * Data_contraste
 * Poumon_sain_seg
 * Annotation_Meta
