@@ -25,8 +25,7 @@ Nous disposons en tout de :
 Le dossier du projet est sur /mnt/cbib/Projet_Detection_Metastase_Souris avec comme architecture : 
 
 Projet_Detection_Metastase_Souris
-* Antoine_Git : Ensemble des script python. 
-  * okok
+* Antoine_Git : Ensemble des script python.   
 * Data 
 * DATA
 * Data_contraste
@@ -34,7 +33,41 @@ Projet_Detection_Metastase_Souris
 * Annotation_Meta
 
 
+## Scripts 
+
+* main.py
+* model.py
+* utils.py
+* data.py
+* Cnn-Lstm.py
+* creative_meta.py
+* filtre_debruiteur.py
+* modif_jeu_data.py
+* qualite.py
+* stats_seg_poum_meta.py
+* tab_csv.py
+* train_model_poum.py
+* train_model_meta.py
+* Validation_croisee.py
+* visualize.py
+* weighted.py
+
+### Avec console Python
+
+J'ai construits l'ensemble de mes scripts avec la console python sur Pycharm ou Jupyter. 
+
+Pour utiliser les scripts sur Pycharm, il suffit de spécifier le path (commenter) dans le main.py : 
+```
+ROOT_DIR = os.path.abspath("le_chemin_d'acces_en_entier/Projet_Detection_Metastase_Souris/") 
+```
+
+### Avec terminal
+Pour lancer les script, il faut se placer dans le dossier Projet_Detection_Metastase_Souris puis lancer le script désiré : 
+```
+cd le_chemin_d'acces/Projet_Detection_Metastase_Souris
+```
+```
+python main.py
+```
 
 
-
-Pour lancer les script, il faut se placer dans le dossier Projet_Detection_Metastase_Souris. 
