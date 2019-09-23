@@ -39,12 +39,12 @@ L'architecture de ce dossier est la suivante :
   * Poumons et Métastases : les modèles construits, résultats de segmentation et statistique sur les résultats.
 * Data : L'ensemble des données brutes acquis par le RMSB contenant deux groupes de souris iL34_1c et LacZ.
 * DATA : 
- * Souris : souris.tif qui ont été annotés pour la segmentation des poumons.
- * Masque : dossier contenant les masques des poumons pour les souris annotées.
- * Image : ensemble des slices du dossier Souris.
- * Label : ensemble des masques associées.
- * Souris_Test : 3 souris avec respectivement des poumons sains, des petites métastases et des grosses métastases. Les masques de ces souris sont présents pour les poumons et les métastases dans les dossiers Masque.
- * Tableau_General.csv : Tableau qui résume les caractéristiques des images que j'ai jugé utile de créer (pour la segmentation des poumons)
+  * Souris : souris.tif qui ont été annotés pour la segmentation des poumons.
+  * Masque : dossier contenant les masques des poumons pour les souris annotées.
+  * Image : ensemble des slices du dossier Souris.
+  * Label : ensemble des masques associées.
+  * Souris_Test : 3 souris avec respectivement des poumons sains, des petites métastases et des grosses métastases. Les masques de ces souris sont présents pour les poumons et les métastases dans les dossiers Masque.
+  * Tableau_General.csv : Tableau qui résume les caractéristiques des images que j'ai jugé utile de créer (pour la segmentation des poumons)
 * Data_contraste
 * Poumon_sain_seg
 * Annotation_Meta
