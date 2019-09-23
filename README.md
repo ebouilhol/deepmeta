@@ -23,12 +23,13 @@ Nous disposons en tout de :
 Le dossier du projet est sur /mnt/cbib/Projet_Detection_Metastase_Souris avec comme architecture : 
 
 Projet_Detection_Metastase_Souris
-    - Antoine_Git
-    - Data 
-    - DATA
-    - Data_contraste
-    - Poumon_sain_seg
-    - Annotation_Meta
+    * Antoine_Git : Ensemble des script python. 
+        ** okok
+    * Data 
+    * DATA
+    * Data_contraste
+    * Poumon_sain_seg
+    * Annotation_Meta
 
 
 
