@@ -2,6 +2,8 @@
 Ce projet à pour but de construire des modèles de segmentation automatique d'images IRM pour la détection des poumons et
 métastases pulmonaires dans le cas du petit animal, la souris. 
 
+Les méthodes utilisées pour ce projet sont issues du Deep Learning.
+
 ## Données
 Les données sont des images IRM 3D 128x128x128 voxels, acquises par le RMSB, et représentent l'état de la maladie d'une souris 
 à un instant donné. 
@@ -24,7 +26,7 @@ Le dossier du projet est sur /mnt/cbib/Projet_Detection_Metastase_Souris avec co
 
 Projet_Detection_Metastase_Souris
 * Antoine_Git : Ensemble des script python. 
-** okok
+  * okok
 * Data 
 * DATA
 * Data_contraste
