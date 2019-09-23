@@ -18,3 +18,20 @@ Nous disposons en tout de :
 * 87 images de souris = 11136 slices. 
 * 27 souris annotées pour la segmentation des poumons => 2128 slices présentants des poumons. 
 * 8 souris annotées pour la segmentation des métastases => 620 slices présentants des poumons et 387 d'entres elles présentent des métastases
+
+## Projet
+Le dossier du projet est sur /mnt/cbib/Projet_Detection_Metastase_Souris avec comme architecture : 
+
+Projet_Detection_Metastase_Souris
+    - Antoine_Git
+    - Data 
+    - DATA
+    - Data_contraste
+    - Poumon_sain_seg
+    - Annotation_Meta
+
+
+
+
+
+Pour lancer les script, il faut se placer dans le dossier Projet_Detection_Metastase_Souris. 
