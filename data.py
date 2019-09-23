@@ -10,7 +10,7 @@ import os
 
 
 
-def create_data_detect_poum(path_img,tab,numSouris):
+def create_data_detect_poum(path_img, tab, numSouris):
     """
     -- Chargement des images de souris annotées + amélioration du contraste
        Chargement des masques + complétions par masque vide --
@@ -19,7 +19,10 @@ def create_data_detect_poum(path_img,tab,numSouris):
     :param tab: tableau résumant les identifiants et annotations pour les souris.
     :param numSouris: numéro de souris annotées (cf tableau deuxième colonne).
 
-    :return: image avec son masque associé et son identifiant
+    :return:
+        - data_detec : ensemble des slices de souris où les poumons ont été annotés.
+        - label_detec : label de chaque slices 1 présentant des poumons, 0 sinon.
+        - ind_2D : identifiant de chaque slices considérées.
     """
 
     data_detec = []
@@ -42,7 +45,7 @@ def create_data_detect_poum(path_img,tab,numSouris):
 
 
 
-def create_data_seg_poum(path_img,path_lab,tab):
+def create_data_seg_poum(path_img, path_lab, tab):
 
     """
     -- Chargement des Images et des Masques : que ceux où poumon == 1 sur csv. --
@@ -50,6 +53,9 @@ def create_data_seg_poum(path_img,path_lab,tab):
     :param path_lab: ensemble des annotations de poumons.
     :param tab: tableau résumant les identifiants et annotations pour les souris.
     :return:
+        - data_2D : ensemble des slices de poumons
+        - label_2D : ensemble des masques de poumons
+        - ind_2D : identifiant de chaque slices considérées.
     """
 
     data_2D = []
@@ -57,7 +63,7 @@ def create_data_seg_poum(path_img,path_lab,tab):
     ind_2D = []
 
     for i in np.arange(len(tab)):
-        if tab[i,4]==1:
+        if tab[i, 4] == 1:
             im = io.imread(path_img + 'img_'+str(i)+'.tif', plugin='tifffile')
             img_adapteq = exposure.equalize_adapthist(im, clip_limit=0.03)
             data_2D.append(img_adapteq)
@@ -72,10 +78,15 @@ def create_data_seg_poum(path_img,path_lab,tab):
 
 
 
-def recup_new_data():
+def recup_new_data(path_new):
 
-    path_new = "/home/achauviere/Bureau/Poumon_sain_seg/Nouvelles_Images/"
-
+    """
+    :param path_new: path des images synthétiques construites .
+    :return:
+        - newData : Ensemble de slices synthétiques
+        - newMaskPoum : Les masques de poumons associés pour chaque slice
+        - newMaskMeta : Les masques de métastases associés pour chaque slice
+    """
     newData = []
     newMaskPoum = []
     newMaskMeta = []
@@ -103,6 +114,17 @@ def recup_new_data():
 
 
 def crate_data_3D(path_img, path_lab, tab, numSouris, etale=False):
+    """
+    :param path_img: ensemble des images de souris où les poumons ont été annotés.
+    :param path_lab: ensemble des annotations de poumons.
+    :param tab: tableau résumant les identifiants et annotations pour les souris.
+    :param numSouris: liste contenant le numéro de chaque souris annotées
+    :param etale: autre méthode pour obtenir intensité des pixels compris entre 0 et 1.
+    :return:
+        - data_3D : ensemble des images de souris (numSouris, 128, 128, 128)
+        - label_3D : ensemble des masques de poumons (numSouris, 128, 128, 128)
+        - ind_3D : identifiant de chaque slices considérées.
+    """
 
     data_3D = []
     label_3D = []
@@ -154,10 +176,13 @@ def crate_data_3D(path_img, path_lab, tab, numSouris, etale=False):
 
 def create_data_meta(path_img, path_lab, tab):
     """
-    :param path_img: Toutes les slices appartenant a des souris ou les métas ont été annotées
+    :param path_img: Toutes les slices appartenant a des souris ou les métastases ont été annotées
     :param path_lab: Tous les labels correspondant (vide si pas de métastases)
     :param tab: Tableau csv avec les colonnes pour les métastases (Nbr, Num, Annot)
-    :return: Data, Label, ind
+    :return:
+        - Data : ensemble des slices présentant des poumons avec ou sans métastases.
+        - label : ensemble des masques des métastases (vide si pas de métastases)
+        - ind : identifiant de chaque slices considérées.
     """
 
     Data = []

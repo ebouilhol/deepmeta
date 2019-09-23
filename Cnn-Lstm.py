@@ -9,8 +9,9 @@ import os
 import sys
 
 ## Path ##
-ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/") # dans mon cas.
+ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
 sys.path.append(ROOT_DIR)
+
 # PATH_DATA = "./DATA/"
 PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
 # PATH_GIT = "./Antoine_Git/"
@@ -29,17 +30,17 @@ et d'entrainer seulement la partie BDC LSTM
 for time in [6, 9, 12, 16, 32, 64, 128]:
 
     ### Path ###
-    path_souris = PATH_DATA + "Souris/"
-    path_mask = PATH_DATA + "Masques/"
-    path_img = PATH_DATA + "Image/"
-    path_lab = PATH_DATA + "Label/"
-    tab = pd.read_csv(PATH_DATA + "Tableau_General.csv").values
+    path_souris = PATH_DATA + "Poumons/Souris/"
+    path_mask = PATH_DATA + "Poumons/Masques/"
+    path_img = PATH_DATA + "Poumons/Image/"
+    path_lab = PATH_DATA + "Poumons/Label/"
+    tab = pd.read_csv(PATH_DATA + "Poumons/Tableau_General.csv").values
 
     ### Data ###
     numSouris = utils.calcul_numSouris(path_souris)
     data_3D, label_3D, ind_3D = data.crate_data_3D(path_img, path_lab, tab, numSouris)
-    data_3D = data_3D.reshape(-1,128,128,128,1)
-    label_3D = label_3D.reshape(-1,128,128,128,1)
+    data_3D = data_3D.reshape(-1, 128, 128, 128, 1)
+    label_3D = label_3D.reshape(-1, 128, 128, 128, 1)
 
     sample = int(3456/time)
 
@@ -59,7 +60,7 @@ for time in [6, 9, 12, 16, 32, 64, 128]:
     ### Transfer Learning ###
     input_shape = (time, 128, 128, 1)
 
-    # model small unet
+    # model small unet (pour un autre modèle, il s'agira de revoir le nbr de couches à freezer par la suite)
     small_Unet = keras.models.load_model(path_small_Unet, custom_objects={'mean_iou': utils.mean_iou})
 
     # model bclstm
@@ -80,5 +81,5 @@ for time in [6, 9, 12, 16, 32, 64, 128]:
     bclstm_Unet.fit(data_3D, label_3D, validation_split=0.2, batch_size=8, epochs=50, callbacks=[earlystopper])
     bclstm_Unet.save(path_result + "bclstm_"+str(time)+"_tl.h5")
 
-
-
+    # Il serait peut être pertinent d'ensuite réentrainer le modèle en entier pour une bonne continuité entre la partie
+    # freezer et la partie LSTM entrainée.

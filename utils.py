@@ -2,7 +2,6 @@
 
 import re
 import numpy as np
-import logging
 from skimage import exposure, measure
 import tensorflow as tf
 from keras import backend as K
@@ -20,7 +19,7 @@ def sorted_aphanumeric(data):
     :return: list triee dans l'ordre croissant alphanumerique.
     """
     convert = lambda text: int(text) if text.isdigit() else text.lower()
-    alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ]
+    alphanum_key = lambda key: [convert(c) for c in re.split('([0-9]+)', key)]
     return sorted(data, key=alphanum_key)
 
 
@@ -45,11 +44,11 @@ def contraste_and_reshape(souris):
             img_adapteq = exposure.equalize_adapthist(souris[i], clip_limit=0.03)
             data.append(img_adapteq)
         data = np.array(data).reshape(-1, 128, 128, 1)
-        return (data)
+        return data
     else:
         img_adapteq = exposure.equalize_adapthist(souris, clip_limit=0.03)
         img = np.array(img_adapteq).reshape(128, 128, 1)
-        return(img)
+        return img
 
 def calcul_numSouris(path_souris):
     """
@@ -72,7 +71,7 @@ def mean_iou(y_true, y_pred):
     prec = []
     for t in np.arange(0.5, 1.0, 0.05):
         y_pred_ = tf.to_int32(y_pred > t)
-        score, up_opt = tf.metrics.mean_iou(y_true, y_pred_, 2)
+        score, up_opt = tf.metrics.mean_iou(y_true, y_pred, 2)
         K.get_session().run(tf.local_variables_initializer())
         with tf.control_dependencies([up_opt]):
             score = tf.identity(score)
@@ -86,13 +85,13 @@ def apply_mask(img, mask):
     :param mask: masque 128x128 d'un objet de l'image originale
     :return: image 128x128 après application du masque
     """
-    im = np.zeros((128,128))
+    im = np.zeros((128, 128))
     for i in np.arange(128):
         for j in np.arange(128):
-            if mask[i,j] == True :
-                im[i,j] = img[i,j]*1
+            if mask[i, j]:
+                im[i, j] = img[i, j]*1
             else:
-                im[i,j] = 0
+                im[i, j] = 0
     return im
 
 def apply_mask_and_noise(img, mask, noise):
@@ -105,10 +104,10 @@ def apply_mask_and_noise(img, mask, noise):
     im = np.zeros((128,128))
     for i in np.arange(128):
         for j in np.arange(128):
-            if mask[i,j] == True :
-                im[i,j] = img[i,j]*1
+            if mask[i, j]:
+                im[i, j] = img[i, j]*1
             else:
-                im[i,j] = noise + gauss(0,10)
+                im[i, j] = noise + gauss(0, 10)
     return im
 
 
@@ -121,13 +120,13 @@ def etale_hist(img):
     return new_img
 
 
-def concat_data(a,b):
+def concat_data(a, b):
     """
     :param a: ensemble de x images 128x128
     :param b: ensemble de y images 128x128
     :return: ensemble concaténé de x+y images 128x128
     """
-    new = np.zeros(((np.shape(a)[0]+np.shape(b)[0],128,128)))
+    new = np.zeros((np.shape(a)[0]+np.shape(b)[0], 128, 128))
     new[0:np.shape(a)[0]] = a
     new[np.shape(a)[0]:(np.shape(a)[0]+np.shape(b)[0])] = b
     return new
@@ -147,11 +146,11 @@ def inverse_binary_mask(msk):
     :param msk: masque binaire 128x128
     :return: masque avec binarisation inversée 128x128
     """
-    new_mask = np.ones((128,128)) - msk
+    new_mask = np.ones((128, 128)) - msk
     return new_mask
 
 
-def weight_map(label,a,b):
+def weight_map(label, a, b):
     """
     Création du carte de poids définissant une valeur d'importance pour chaque pixel
     Les pixels n'appartenant pas au masque ont une valeur de poids définit à 1 par défaut
@@ -160,7 +159,7 @@ def weight_map(label,a,b):
     :param b: valeur du poids pour pixel appartenant au contour du maque
     :return: ensemble de y weight map 128x128
     """
-    weight = np.zeros(((label.shape[0], 128, 128)))
+    weight = np.zeros((label.shape[0], 128, 128))
 
     for k in np.arange(label.shape[0]):
 

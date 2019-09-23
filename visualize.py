@@ -4,26 +4,33 @@ import keras
 from keras import models
 import matplotlib.pyplot as plt
 import numpy as np
+import os
+import sys
 
+ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
+sys.path.append(ROOT_DIR)
 
+# PATH_GIT = "./Antoine_Git/"
+PATH_GIT = os.path.join(ROOT_DIR, "./Antoine_Git/")
 
+# PATH_DATA = "./DATA/"
+PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
 
 ######## Visualisation des features maps ########
 
 # On choisit une image :
-souris_28 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_28.tif"
+souris_28 = os.path.join(PATH_DATA, "Souris_Test/Souris/souris_28.tif")
 data = utils.contraste_and_reshape(io.imread(souris_28))
 img = data[50]
-img = img.reshape(1,128,128,1)
+img = img.reshape(1, 128, 128, 1)
 
 # On load le modele
-path_model_seg = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/model/model_seg.h5"
+path_model_seg = os.path.join(PATH_GIT, "Poumons/model/model_seg.h5")
 modele_seg = keras.models.load_model(path_model_seg, custom_objects={'mean_iou': utils.mean_iou})
 
 # Extracts the outputs of every layers
-layer_name=None
-outputs = [layer.output for layer in modele_seg.layers if
-               layer.name == layer_name or layer_name is None][1:]
+layer_name = None
+outputs = [layer.output for layer in modele_seg.layers if layer.name == layer_name or layer_name is None][1:]
 
 # Creates a model that will return these outputs, given the model input
 activation_model = models.Model(inputs=modele_seg.input, outputs=outputs)
@@ -45,9 +52,7 @@ for layer_name, layer_activation in zip(layer_names, activations):  # Displays t
     display_grid = np.zeros((size * n_cols, images_per_row * size))
     for col in range(n_cols):  # Tiles each filter into a big horizontal grid
         for row in range(images_per_row):
-            channel_image = layer_activation[0,
-                            :, :,
-                            col * images_per_row + row]
+            channel_image = layer_activation[0, :, :, col * images_per_row + row]
             channel_image -= channel_image.mean()  # Post-processes the feature to make it visually palatable
             channel_image /= channel_image.std()
             channel_image *= 64

@@ -1,30 +1,33 @@
 import pandas as pd
 import os
-import re
 import numpy as np
 import utils
 import data
+import sys
+import cv2
 
-path_souris = "/home/achauviere/Bureau/DATA/Souris/"
-path_mask = "/home/achauviere/Bureau/DATA/Masques/"
-path_img = "/home/achauviere/Bureau/DATA/Image/"
-path_lab = "/home/achauviere/Bureau/DATA/Label/"
-tab = pd.read_csv("/home/achauviere/Bureau/DATA/Tableau_General.csv").values
+ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
+sys.path.append(ROOT_DIR)
 
-path_med = "/home/achauviere/Bureau/Filtre_debruiteur/Median/"
-path_moy = "/home/achauviere/Bureau/Filtre_debruiteur/Mean/"
-path_max = "/home/achauviere/Bureau/Filtre_debruiteur/Max/"
+# PATH_DATA = "./DATA/"
+PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
 
+# PATH_Data_contr = "./Data_contraste/"
+PATH_Data_contr = os.path.join(ROOT_DIR, "./Data_contraste/")
 
+path_souris = os.path.join(PATH_DATA, "Poumons/Souris/")
+path_mask = os.path.join(PATH_DATA, "Poumons/Masques/")
+path_img = os.path.join(PATH_DATA, "Poumons/Image/")
+path_lab = os.path.join(PATH_DATA, "Poumons/Label/")
+tab = pd.read_csv(os.path.join(PATH_DATA, "Poumons/Tableau_General.csv")).values
 
-list_souris = utils.sorted_aphanumeric(os.listdir(path_souris))
-numSouris = []
-for k in np.arange(len(list_souris)):
-    numSouris.append(int(re.findall('\d+',list_souris[k])[0]))
+path_med = os.path.join(PATH_Data_contr, "Filtre_debruiteur/Median/")
+path_moy = os.path.join(PATH_Data_contr,  "Filtre_debruiteur/Mean/")
+path_max = os.path.join(PATH_Data_contr,  "Filtre_debruiteur/Max/")
 
+numSouris = utils.calcul_numSouris(path_souris)
 
 data_3D, label_3D, ind_3D = data.crate_data_3D(path_img, path_lab, tab, numSouris, etale=True)
-
 
 for n in np.arange(len(numSouris)):
 

@@ -7,21 +7,30 @@ import model
 from keras.callbacks import EarlyStopping
 import os
 import scipy
+import sys
 
-path_data = "/home/achauviere/Bureau/DATA/"
-path_result = "/home/achauviere/PycharmProjects/Antoine_Git/Poumons/stats/Batch_size/"
+ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
+sys.path.append(ROOT_DIR)
+
+# PATH_GIT = "./Antoine_Git/"
+PATH_GIT = os.path.join(ROOT_DIR, "./Antoine_Git/")
+
+# PATH_DATA = "./DATA/"
+PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
+
 
 ### Optimisation du batch size à utiliser pour le U-Net ###
 
-Result = np.zeros(((10,4,6))) #10 essais, 4 mesure, 6 batchsize
+path_result = os.path.join(PATH_GIT, "Poumons/stats/Batch_size/")
+Result = np.zeros((10, 4, 6))  # 10 essais, 4 mesure, 6 batchsize
 
 for k in range(10):
 
-    path_souris = path_data + "Souris/"
-    path_mask = path_data + "Masques/"
-    path_img = path_data + "Image/"
-    path_lab = path_data + "Label/"
-    tab = pd.read_csv(path_data + "Tableau_General.csv").values
+    path_souris = PATH_DATA + "Souris/"
+    path_mask = PATH_DATA + "Masques/"
+    path_img = PATH_DATA + "Image/"
+    path_lab = PATH_DATA + "Label/"
+    tab = pd.read_csv(PATH_DATA + "Tableau_General.csv").values
 
     numSouris = utils.calcul_numSouris(path_souris)
     numSouris_sample = random.sample(list(numSouris), 24)
@@ -34,7 +43,7 @@ for k in range(10):
             im = io.imread(path_img + 'img_' + str(i) + '.tif', plugin='tifffile')
             img_adapteq = exposure.equalize_adapthist(im, clip_limit=0.03)
 
-            if tab[i,1] in numSouris_sample:
+            if tab[i, 1] in numSouris_sample:
                 X_train.append(img_adapteq)
                 y_train.append(io.imread(path_lab + 'm_' + str(i) + '.tif'))
                 ind_train.append(i)
@@ -57,10 +66,11 @@ for k in range(10):
     for j in range(6):
 
         #fit model
-        input_shape = (128,128,1)
+        input_shape = (128, 128, 1)
         model_seg = model.model_unet_2D(input_shape)
         earlystopper = EarlyStopping(patience=5, verbose=1)
-        model_seg.fit(X_train, y_train, validation_split=0.2, batch_size=batch_size[j], epochs=70,callbacks=[earlystopper])
+        model_seg.fit(X_train, y_train, validation_split=0.2, batch_size=batch_size[j], epochs=70,
+                      callbacks=[earlystopper])
 
         #pred
         X_test = X_test.reshape(-1, 128, 128, 1)
@@ -78,5 +88,5 @@ if not os.path.exists(path_result):
     os.makedirs(path_result)
 
 for j in range(6):
-    df = pd.DataFrame(Result[:,:,j], columns=label)
+    df = pd.DataFrame(Result[:, :, j], columns=label)
     df.to_csv(path_result + "/batch_"+str(batch_size[j])+".csv")

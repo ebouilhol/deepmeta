@@ -11,7 +11,7 @@ import os
 
 def model_detection():
     """
-    :return: Compile un réseau de détection de slices présentant des poumons
+    :return: Compile un réseau convolutionnels de détection de slices présentant des poumons
     """
     fashion_model = Sequential()
     fashion_model.add(Conv2D(32, kernel_size=(3, 3), activation='linear', input_shape=(128, 128, 1), padding='same'))
@@ -24,14 +24,14 @@ def model_detection():
     fashion_model.add(LeakyReLU(alpha=0.1))
     fashion_model.add(MaxPooling2D(pool_size=(2, 2), padding='same'))
     fashion_model.add(Flatten())
-    fashion_model.add(Dense(128, activation='linear'))
+    fashion_model.add(Dense(128, activation='linear'))  # Classifieur
     fashion_model.add(LeakyReLU(alpha=0.1))
     fashion_model.add(Dense(2, activation='softmax'))
 
     es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=3)
 
-    fashion_model.compile(loss=keras.losses.categorical_crossentropy, optimizer=keras.optimizers.Adam()
-                          , metrics=['accuracy'])
+    fashion_model.compile(loss=keras.losses.categorical_crossentropy, optimizer=keras.optimizers.Adam(),
+                          metrics=['accuracy'])
     return fashion_model
 
 
@@ -103,7 +103,7 @@ def model_unet_2D(input_shape, wei=False):
 
 
 def methode_detect_seg(path_souris, path_model_detect, path_model_seg, path_result,
-                       name_folder, mask=None, full_souris=True, visu_seg=True, img=None, wei=False):
+                       name_folder, mask=None, full_souris=True, visu_seg=True, wei=False):
     """
     Méthode 2D qui permet de segmenter les poumons slice par slice. La segmentation est enfin ajustée grâce au modèle
     de détection (si le modèle ne détecte pas de poumons alors le masque est vide)
@@ -161,19 +161,19 @@ def methode_detect_seg(path_souris, path_model_detect, path_model_seg, path_resu
                     ax.plot(contour[:, 1], contour[:, 0], linewidth=1, color='red')
                 plt.xlim((0, 128))
                 plt.ylim((128, 0))
-                plt.imshow(data[k], cmap='gray');
+                plt.imshow(data[k], cmap='gray')
                 plt.savefig(path_result + str(name_folder) + "/m_" + str(k) + ".png")
                 plt.close(fig)
 
             else:
                 fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(10, 10))
-                plt.imshow(data[k], cmap='gray');
+                plt.imshow(data[k], cmap='gray')
                 plt.savefig(path_result + str(name_folder) + "/m_" + str(k) + ".png")
                 plt.close(fig)
 
     if mask:
         ind = np.where(detect == 1)
-        return detect, seg#[ind]
+        return detect, seg#[ind] décommenter si l'on veut la segmentation que pour les cas détectés
 
 
 def methode_multi_axe(path_souris, path_model_axial, path_model_sagital, path_model_corronal,
@@ -215,8 +215,8 @@ def methode_multi_axe(path_souris, path_model_axial, path_model_sagital, path_mo
     seg_ax = (model_axial.predict(data) > 0.5).astype(np.uint8).reshape(128, 128, 128)
 
     data = data.reshape(128, 128, 128)
-    data_sag = np.zeros(((128, 128, 128)))
-    data_cor = np.zeros(((128, 128, 128)))
+    data_sag = np.zeros((128, 128, 128))
+    data_cor = np.zeros((128, 128, 128))
 
     for i in np.arange(128):
         data_sag[i] = data[:, i, :]
@@ -228,7 +228,7 @@ def methode_multi_axe(path_souris, path_model_axial, path_model_sagital, path_mo
     seg_sag = (model_sagital.predict(data_sag) > 0.5).astype(np.uint8).reshape(128, 128, 128)
     seg_cor = (model_corronal.predict(data_cor) > 0.5).astype(np.uint8).reshape(128, 128, 128)
 
-    result_mask = np.zeros(((128, 128, 128)))
+    result_mask = np.zeros((128, 128, 128))
     for x in np.arange(128):
         for y in np.arange(128):
             for z in np.arange(128):
@@ -249,7 +249,7 @@ def methode_multi_axe(path_souris, path_model_axial, path_model_sagital, path_mo
                 ax.plot(contour[:, 1], contour[:, 0], linewidth=1, color='red')
             plt.xlim((0, 128))
             plt.ylim((128, 0))
-            plt.imshow(data[k], cmap='gray');
+            plt.imshow(data[k], cmap='gray')
             plt.savefig(path_result + str(name_folder) + "/m_" + str(k) + ".png")
             plt.close(fig)
 
@@ -263,6 +263,9 @@ def seg_meta_original(path_souris, path_model_seg_meta, path_result, name_folder
     :param path_model_seg_meta: modèle de segmentation de métastases format h5
     :param path_result: chemin où sauvegarder le résultat (path/)
     :param name_folder: nom du dossier où stocker les résultats
+    :param wei: utilisation d'un modèle avec poids modifiés
+    :param visu_seg: True correspond à la sauvegarde des contours sur les images
+    :param mask: si True alors retourne matrice avec la valeur des masques
     :return:
     """
 
@@ -292,7 +295,7 @@ def seg_meta_original(path_souris, path_model_seg_meta, path_result, name_folder
                 ax.plot(contour[:, 1], contour[:, 0], linewidth=1, color='red')
             plt.xlim((0, 128))
             plt.ylim((128, 0))
-            plt.imshow(data[k], cmap='gray');
+            plt.imshow(data[k], cmap='gray')
             plt.savefig(path_result + str(name_folder) + "/m_" + str(k) + ".png")
             plt.close(fig)
 
@@ -302,6 +305,7 @@ def seg_meta_original(path_souris, path_model_seg_meta, path_result, name_folder
 
 
 def seg_meta_poum_seg(path_souris, path_model_seg_poum, path_model_seg_meta, path_result, name_folder):
+
     souris = io.imread(path_souris, plugin='tifffile')
     data = utils.contraste_and_reshape(souris)
 
@@ -614,7 +618,10 @@ def unetCoupe2Max(input_shape):
 
 
 def bclstm_unet(input_shape):
-
+    """
+    :param input_shape: dimension des images en entrées, (time, 128, 128, 1)
+    :return: k-Unet relié au niveau du pont par deux couches BDC-LSTM
+    """
     inputs = Input(input_shape)
 
     c2 = TimeDistributed(Conv2D(32, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(inputs)
@@ -639,21 +646,21 @@ def bclstm_unet(input_shape):
 
     u6 = TimeDistributed(Conv2DTranspose(128, (2, 2), strides=(2, 2), padding='same'))(b2)
     u6 = concatenate([u6, c4])
-    c6 = TimeDistributed(Conv2D(128, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(u6)
+    c6 = TimeDistributed(Conv2D(128, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same'))(u6)
     c6 = TimeDistributed(Dropout(0.2))(c6)
-    c6 = TimeDistributed(Conv2D(128, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(c6)
+    c6 = TimeDistributed(Conv2D(128, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same'))(c6)
 
     u7 = TimeDistributed(Conv2DTranspose(64, (2, 2), strides=(2, 2), padding='same'))(c6)
     u7 = concatenate([u7, c3])
-    c7 = TimeDistributed(Conv2D(64, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(u7)
+    c7 = TimeDistributed(Conv2D(64, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same'))(u7)
     c7 = TimeDistributed(Dropout(0.2))(c7)
-    c7 = TimeDistributed(Conv2D(64, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(c7)
+    c7 = TimeDistributed(Conv2D(64, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same'))(c7)
 
     u8 = TimeDistributed(Conv2DTranspose(32, (2, 2), strides=(2, 2), padding='same'))(c7)
     u8 = concatenate([u8, c2])
-    c8 = TimeDistributed(Conv2D(32, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(u8)
+    c8 = TimeDistributed(Conv2D(32, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same'))(u8)
     c8 = TimeDistributed(Dropout(0.1))(c8)
-    c8 = TimeDistributed(Conv2D(32, (3, 3), activation='elu',kernel_initializer='he_normal', padding='same'))(c8)
+    c8 = TimeDistributed(Conv2D(32, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same'))(c8)
 
     outputs = TimeDistributed(Conv2D(1, (1, 1), activation='sigmoid'))(c8)
 
@@ -662,8 +669,17 @@ def bclstm_unet(input_shape):
     return model
 
 
-
 def seg_poum_lstm(path_souris, path_model_detect, path_model_seg, time):
+
+    """
+    :param path_souris: path de la souris pour le test
+    :param path_model_detect: path modèle de détection
+    :param path_model_seg: path modèle de segmentation Cnn Lstm
+    :param time: time utilisé pour la construction du modèle
+    :return:
+        - detect : detection des slices (vecteur de 128 valeurs 0 ou 1) et
+        - pred : masque résultats des segmentation des slices
+    """
 
     souris = io.imread(path_souris, plugin='tifffile')
     data = utils.contraste_and_reshape(souris)
@@ -679,90 +695,59 @@ def seg_poum_lstm(path_souris, path_model_detect, path_model_seg, time):
     return detect, pred
 
 
-
-
-
-
-
-
-def methode_detect_seg_2(path_souris, path_model_detect, path_model_seg, path_model_seg_meta, path_result,
-                       name_folder, mask=None, full_souris=True, visu_seg=True, img=None, wei=False):
-
-    if full_souris:
-        souris = io.imread(path_souris, plugin='tifffile')
-
-    else:
-        slices_list = utils.sorted_aphanumeric(os.listdir(path_souris))
-        s = np.zeros(((len(slices_list), 128, 128)))
-        for i in np.arange(len(slices_list)):
-            s[i] = io.imread(path_souris + slices_list[i])
-        souris = np.array(s)
-
-    data = utils.contraste_and_reshape(souris)
-
-    model_detect = keras.models.load_model(path_model_detect)
-
-    if not wei:
-        modele_seg = keras.models.load_model(path_model_seg, custom_objects={'mean_iou': utils.mean_iou})
-    else:
-        modele_seg = keras.models.load_model(path_model_seg,
-                                             custom_objects={'weighted_cross_entropy': utils.weighted_cross_entropy})
-
-    model_seg_meta = keras.models.load_model(path_model_seg_meta, custom_objects={'mean_iou': utils.mean_iou})
-
-    detect = model_detect.predict_classes(data)
-    seg = (modele_seg.predict(data) > 0.5).astype(np.uint8).reshape(128, 128, 128)
-    seg_meta = (model_seg_meta.predict(data) > 0.5).astype(np.uint8).reshape(128, 128, 128)
-    data = data.reshape(128, 128, 128)
-
-    if visu_seg:
-
-        if not os.path.exists(path_result + str(name_folder)):
-            os.makedirs(path_result + str(name_folder))
-
-        for k in np.arange(128):
-            cell_contours = measure.find_contours(seg[k], 0.8)
-            cell_contours2 = measure.find_contours(seg_meta[k], 0.8)
-
-            fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(10, 10))
-            for n, contour in enumerate(cell_contours):
-                ax.plot(contour[:, 1], contour[:, 0], linewidth=1, color='red')
-            for n, contour in enumerate(cell_contours2):
-                ax.plot(contour[:, 1], contour[:, 0], linewidth=1, color='green')
-            plt.xlim((0, 128))
-            plt.ylim((128, 0))
-            plt.imshow(data[k], cmap='gray');
-            plt.savefig(path_result + str(name_folder) + "/m_" + str(k) + ".png")
-            plt.close(fig)
-
-    if mask:
-        ind = np.where(detect == 1)
-        return detect, seg#[ind]
-
-
-
-
-
-
-def visu_souris(path_souris, path_result, name_folder):
-
-
-    souris = io.imread(path_souris, plugin='tifffile')
-    data = utils.contraste_and_reshape(souris)
-
-    data = data.reshape(128, 128, 128)
-
-    os.makedirs(path_result + str(name_folder))
-
-    for k in np.arange(128):
-        fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(10, 10))
-
-        plt.xlim((0, 128))
-        plt.ylim((128, 0))
-        plt.imshow(data[k], cmap='gray');
-        plt.savefig(path_result + str(name_folder) + "/m_" + str(k) + ".png")
-        plt.close(fig)
-
-souris_8 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_8.tif"
-souris_28 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_28.tif"
-souris_56 = "/home/achauviere/Bureau/DATA/Souris_Test/Souris/souris_56.tif"
+# A SUPPRIMER ?
+# def methode_detect_seg_2(path_souris, path_model_detect, path_model_seg, path_model_seg_meta, path_result,
+#                        name_folder, mask=None, full_souris=True, visu_seg=True, img=None, wei=False):
+#
+#     if full_souris:
+#         souris = io.imread(path_souris, plugin='tifffile')
+#
+#     else:
+#         slices_list = utils.sorted_aphanumeric(os.listdir(path_souris))
+#         s = np.zeros(((len(slices_list), 128, 128)))
+#         for i in np.arange(len(slices_list)):
+#             s[i] = io.imread(path_souris + slices_list[i])
+#         souris = np.array(s)
+#
+#     data = utils.contraste_and_reshape(souris)
+#
+#     model_detect = keras.models.load_model(path_model_detect)
+#
+#     if not wei:
+#         modele_seg = keras.models.load_model(path_model_seg, custom_objects={'mean_iou': utils.mean_iou})
+#     else:
+#         modele_seg = keras.models.load_model(path_model_seg,
+#                                              custom_objects={'weighted_cross_entropy': utils.weighted_cross_entropy})
+#
+#     model_seg_meta = keras.models.load_model(path_model_seg_meta, custom_objects={'mean_iou': utils.mean_iou})
+#
+#     detect = model_detect.predict_classes(data)
+#     seg = (modele_seg.predict(data) > 0.5).astype(np.uint8).reshape(128, 128, 128)
+#     seg_meta = (model_seg_meta.predict(data) > 0.5).astype(np.uint8).reshape(128, 128, 128)
+#     data = data.reshape(128, 128, 128)
+#
+#     if visu_seg:
+#
+#         if not os.path.exists(path_result + str(name_folder)):
+#             os.makedirs(path_result + str(name_folder))
+#
+#         for k in np.arange(128):
+#             cell_contours = measure.find_contours(seg[k], 0.8)
+#             cell_contours2 = measure.find_contours(seg_meta[k], 0.8)
+#
+#             fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(10, 10))
+#             for n, contour in enumerate(cell_contours):
+#                 ax.plot(contour[:, 1], contour[:, 0], linewidth=1, color='red')
+#             for n, contour in enumerate(cell_contours2):
+#                 ax.plot(contour[:, 1], contour[:, 0], linewidth=1, color='green')
+#             plt.xlim((0, 128))
+#             plt.ylim((128, 0))
+#             plt.imshow(data[k], cmap='gray');
+#             plt.savefig(path_result + str(name_folder) + "/m_" + str(k) + ".png")
+#             plt.close(fig)
+#
+#     if mask:
+#         ind = np.where(detect == 1)
+#         return detect, seg#[ind]
+#
+#

@@ -3,43 +3,11 @@ import os
 import numpy as np
 import sys
 
-""" 
-Le dossier du projet est sur /mnt/cbib/Projet_Detection_Metastase_Souris avec comme architecture : 
-
-Projet_Detection_Metastase_Souris 
-    - Antoine_Git
-    - Data
-    - DATA 
-    - Data_contraste
-    - Poumon_sain_seg
-    - Annotation_Meta
-"""
-
-""" 
-Pour lancer les scripts, il faut se placer dans le dossier projet. 
-Si l'on veut lancer les lignes de code en local avec la console python, il faut specifier le path ci-dessous :
-"""
-ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/") # dans mon cas.
+ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
 sys.path.append(ROOT_DIR)
-
-
-# Path du Dossier Antoine Git contenant :
-#    - L'ensemble des script.
-#    - Les modèles construits, résultats de segmentation et statistique sur les résultats pour Poumons et Métastases.
 
 # PATH_GIT = "./Antoine_Git/"
 PATH_GIT = os.path.join(ROOT_DIR, "./Antoine_Git/")
-
-
-# Path du Dossier DATA contenant comme dossier :
-#    - Souris : souris.tif qui ont été annotés pour la segmentation des poumons.
-#    - Masque : dossier contenant les masques des poumons pour les souris annotés.
-#    - Image : ensemble des slices du dossier Souris.
-#    - Label : ensemble des masques associées.
-#    - Souris_Test : 3 souris avec respectivement des poumons sains, des petites métastases et des grosses métastases.
-#                  Les masques de ces souris sont présents pour les poumons et les métastases dans les dossiers Masque.
-#    - Tableau_General.csv : Tableau qui résume les caractéristiques des images
-#                                                     que j'ai jugé utile de créer (pour la segmentation des poumons)
 
 # PATH_DATA = "./DATA/"
 PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
@@ -47,11 +15,12 @@ PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
 # PATH_Data = "./Data/"
 PATH_Data = os.path.join(ROOT_DIR, "./Data/")
 
+# PATH_Synth = "./Data_Synthetique/"
+PATH_Synth = os.path.join(ROOT_DIR, "./Data_Synthetique/")
+
 # PATH_Data_contr = "./Data_contraste/"
 PATH_Data_contr = os.path.join(ROOT_DIR, "./Data_contraste/")
 
-# PATH_poum_sain_seg = "./Poumon_sain_seg/"
-PATH_poum_sain_seg = os.path.join(ROOT_DIR, "./Poumon_sain_seg/")
 
 # Souris Test :
 souris_8 = os.path.join(PATH_DATA, "Souris_Test/Souris/souris_8.tif")
@@ -231,7 +200,7 @@ list_folder = ["2Pc_day15", "2Pc_day22", "2Pc_day29", "2Pc_day36", "2Pc_day43", 
 # Utilisation de la méthode detection segmentation avec le U-Net original
 path_model_detect = os.path.join(PATH_GIT, "Poumons/model/model_detect.h5")
 path_model_seg = os.path.join(PATH_GIT, "Poumons/model/model_seg.h5")
-path_result = os.path.join(PATH_GIT, "Poumon_sain_seg/Detect_Seg/")
+path_result = os.path.join(PATH_Synth, "Detect_Seg/")
 
 path = os.path.join(PATH_GIT, "iL34_1c/")
 
@@ -248,7 +217,7 @@ for i in np.arange(len(list_poum)):
 path_model_axial = os.path.join(PATH_GIT, "Poumons/model//model_axial.h5")
 path_model_sagital = os.path.join(PATH_GIT, "Poumons/model/model_sagital.h5")
 path_model_corronal = os.path.join(PATH_GIT, "Poumons/model/model_corronal.h5")
-path_result =  os.path.join(PATH_poum_sain_seg, "Multi_Axes/")
+path_result =  os.path.join(PATH_Synth, "Multi_Axes/")
 
 for i in np.arange(len(list_poum)):
 
@@ -281,6 +250,8 @@ Voir script Cnn-Lstm
 #                                              SEGMENTATION DES METASTASES                                             #
 ########################################################################################################################
 ########################################################################################################################
+
+""" Voir Notebook pour segmentation des métastases"""
 
 souris_8 = os.path.join(PATH_DATA, "Souris_Test/Souris/souris_8.tif")
 souris_28 = os.path.join(PATH_DATA, "Souris_Test/Souris/souris_28.tif")
@@ -327,8 +298,8 @@ model.seg_meta_original(souris_56, path_model_seg_meta, path_result, name_folder
 
 
 path_model_seg_poum = os.path.join(PATH_GIT, "Poumons/model/model_seg.h5")
-path_model_seg_meta = "/home/achauviere/Bureau/Annotation_Meta/Result/Metastases/modele/unet_test2.h5"
-path_result = "/home/achauviere/Bureau/Annotation_Meta/Result/Test_Unet/Image_Poum_Seg/"
+path_model_seg_meta = os.path.join(PATH_GIT, "Metastases/modele/unet_test2.h5")
+path_result =  os.path.join(PATH_GIT, "results/Test_Unet/Image_Poum_Seg/")
 
 name_folder = "souris_8"
 model.seg_meta_poum_seg(souris_8, path_model_seg_poum, path_model_seg_meta, path_result, name_folder)
