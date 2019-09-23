@@ -22,12 +22,20 @@ Nous disposons en tout de :
 * 8 souris annotées pour la segmentation des métastases => 620 slices présentants des poumons et 387 d'entres elles présentent des métastases
 
 ## Projet
-Le dossier du projet est sur /mnt/cbib/Projet_Detection_Metastase_Souris avec comme architecture : 
+Le dossier du projet est disponible sur /mnt/cbib/Projet_Detection_Metastase_Souris. Pour le récuperer : 
 
-Projet_Detection_Metastase_Souris
-* Antoine_Git : Ensemble des script python.   
-* Data 
-* DATA
+```
+scp -r adresse_connexion_serveur_ssh:/mnt/cbib/Projet_Detection_Metastase_Souris chemin_ou_le_placer/
+```
+
+L'architecture de ce dossier est la suivante : 
+
+*Projet_Detection_Metastase_Souris*
+* Antoine_Git : 
+  * Ensemble des script python (présentés dans la partie suivante) 
+  * Poumons et Métastases : les modèles construits, résultats de segmentation et statistique sur les résultats.
+* Data : L'ensemble des données brutes acquis par le RMSB contenant deux groupes de souris iL34_1c et LacZ.
+* DATA : 
 * Data_contraste
 * Poumon_sain_seg
 * Annotation_Meta
