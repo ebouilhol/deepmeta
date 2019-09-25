@@ -2,7 +2,7 @@
 Ce projet à pour but de construire des modèles de segmentation automatique d'images IRM pour la détection des poumons et
 métastases pulmonaires dans le cas du petit animal, la souris. 
 
-Les méthodes utilisées pour ce projet sont issues du Deep Learning, leurs implémentation a été faites sous Python avec comme environnement pour les librairies les plus utilisées :
+Les méthodes utilisées pour ce projet sont issues du Deep Learning, leurs implémentations a été faites sous Python avec comme environnement pour les librairies les plus utilisées :
 
 | Librairie        | Version    |
 | ------------- |:-------------:| 
