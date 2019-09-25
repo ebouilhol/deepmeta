@@ -53,24 +53,35 @@ L'architecture de ce dossier est la suivante :
 
 **Projet_Detection_Metastase_Souris**
 * Antoine_Git : 
-  * Ensemble des script python (présentés dans la partie suivante) 
-  * Poumons et Métastases : les modèles construits, résultats de segmentation et statistique sur les résultats.
+  * Ensemble des script python qui sont présentés dans la partie suivante.
+  * Dossiers - Poumons / Métastases : les modèles construits, résultats de segmentation et statistique sur les résultats.
 * Data : L'ensemble des données brutes acquis par le RMSB contenant deux groupes de souris iL34_1c et LacZ.
-* DATA : 
-  * Souris : souris.tif qui ont été annotés pour la segmentation des poumons.
-  * Masque : dossier contenant les masques des poumons pour les souris annotées.
+* DATA : deux dossier - Poumons et Métastases : 
+  * Souris : souris.tif qui ont été annotés pour la segmentation de l'objet d'intérêt.
+  * Masque : dossier contenant les masques de l'objet d'intérêt pour les souris annotées.
   * Image : ensemble des slices du dossier Souris.
   * Label : ensemble des masques associées.
   * Souris_Test : 3 souris avec respectivement des poumons sains, des petites métastases et des grosses métastases. Les masques de ces souris sont présents pour les poumons et les métastases dans les dossiers Masque.
-  * Tableau_General.csv : Tableau qui résume les caractéristiques des images que j'ai jugé utile de créer (pour la segmentation des poumons)
+  * Tableau_General.csv : Tableau qui résume les caractéristiques des images que j'ai jugé utile de créer que cela soit pour la segmentation des poumons ou des métastases.
+* Data_contraste :
+  * Blanc : dossier avec une souris ayant des contrastes très différents des images habituelles et dossier de résultats de la segmentation sur ces slices. 
+  * Filtre débruiteur : Application de filtre 3x3 max/mean/median sur les images de souris. 
+  * PL33 : Image d'une souris avec encore un autre contraste prise en axiale. 
+* Data_Synthétique :
+  * 
+  *
+  *
+  *
 
-* Annotation_Meta :
-  * Métastases
+* Notebook :
+  *
+  *
+  *
+  *
+  *
 
-* Poumon_sain_seg
 
 
-* Data_contraste
 
 
 ## Scripts 
