@@ -112,4 +112,4 @@ python main.py
 df
 
 
-### Environnement Python
+### Résultats de segmentations
