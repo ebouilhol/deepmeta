@@ -120,7 +120,6 @@ cd le_chemin_d'acces/Projet_Detection_Metastase_Souris
 ```
 python main.py
 ```
-df
 
 
 ### Résultats de segmentations
