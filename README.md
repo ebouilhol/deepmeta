@@ -93,3 +93,13 @@ python main.py
 ```
 
 
+### Environnement Python
+Pour les librairies les plus utilisées :
+
+| Librairie        | Version    |
+| ------------- |:-------------:| 
+| numpy         | 1.17.2        | 
+| pandas        | 0.24.2        |    
+| scikit-image  | 0.14.2        |   
+| tensorflow    | 1.14.0        |   
+| keras         | 2.2.4         |   
