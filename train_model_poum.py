@@ -51,7 +51,7 @@ data_seg, label_seg, ind_seg = data.create_data_detect_poum(path_img, tab, numSo
 
 no = np.arange(len(ind_seg)) ; no_sample = sample(list(no), len(no))
 
-data_seg = data_seg.reshape(-1, 128,128, 1)[no_sample].astype('float32')
+data_seg = data_seg.reshape(-1, 128, 128, 1)[no_sample].astype('float32')
 label_seg = to_categorical(label_seg[no_sample])
 
 model_detect = model.model_detection()

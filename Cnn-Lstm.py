@@ -42,7 +42,7 @@ for time in [6, 9, 12, 16, 32, 64, 128]:
     data_3D = data_3D.reshape(-1, 128, 128, 128, 1)
     label_3D = label_3D.reshape(-1, 128, 128, 128, 1)
 
-    sample = int(3456/time)
+    sample = int(data_3D.shape[0]*data_3D.shape[1]/time)
 
     # fit de lots de time
     data_3D = data_3D.reshape(sample, time, 128, 128, 1)

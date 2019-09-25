@@ -114,6 +114,7 @@ model_seg2.save(os.path.join(PATH_GIT, "Metastases/model/unet_test2.h5"))
     ##################### AMELIORATION AVEC CREATIVE DATA #####################
 ####################################################################################
 
+
 Data, Label, ind = data.create_data_meta(path_img, path_lab, tab)
 
 newData, newPoum, newMeta = data.recup_new_data()
@@ -134,7 +135,7 @@ earlystopper = EarlyStopping(patience=5, verbose=1)
 
 model_seg.fit(Data, MaskMeta, validation_split=0.2, batch_size=32, epochs=70,callbacks=[earlystopper])
 
-model_seg.save('/home/achauviere/Bureau/Annotation_Meta/Result/Modele/unet_creative_diceloss.h5')
+# model_seg.save(os.path.join(PATH_GIT, Metastases/model/unet_creative_diceloss.h5'))
 # J'ai supprimer ce modèle car meilleure approche sur notebook.
 
 

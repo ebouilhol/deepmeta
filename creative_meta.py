@@ -145,7 +145,7 @@ for v in np.arange(souris.shape[0]):
 
     else :
         mask_new_poumon = seg[v] * 1
-        mask_new_meta = np.zeros((128,128))
+        mask_new_meta = np.zeros((128, 128))
 
     # Modif en 0-255:
     img_new = utils.etale_hist(img_new)
