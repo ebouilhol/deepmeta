@@ -20,7 +20,7 @@ Les données sont des images IRM 3D 128x128x128 voxels, acquises par le RMSB, re
 Les images peuvent être visualiser à l'aide du logiciel [Fiji](https://fiji.sc/) et sous différents axes (axial, coronal ou sagittal). 
 Elles ont été acquises suivant le plan coronal et nous les avons traitées dans le sens coronal => meilleur visualisation des poumons.
 
-![Kiku](Image/belle_img_grosse_meta.png =20x)
+![Kiku](Image/belle_img_grosse_meta.png){ width=50% }
 
 Il est possible de définir trois types d'image : 
 * Souris saine : aucune métastase présente dans les poumons.
