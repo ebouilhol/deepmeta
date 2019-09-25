@@ -22,6 +22,11 @@ Elles ont été acquises suivant le plan coronal et nous les avons traitées dan
 
 <img src="Image/data_paint2.png" width="500">
 
+* Rouge : Poumons.
+* Vert : Métastases.
+* Flèche jaune : Vaisseau.
+* Flèche bleu : Coeur.
+
 Il est possible de définir trois types d'image : 
 * Souris saine : aucune métastase présente dans les poumons.
 * Souris en début de maladie : plusieurs petites métastases présentes dans les poumons.
