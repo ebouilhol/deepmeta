@@ -2,14 +2,23 @@
 Ce projet à pour but de construire des modèles de segmentation automatique d'images IRM pour la détection des poumons et
 métastases pulmonaires dans le cas du petit animal, la souris. 
 
-Les méthodes utilisées pour ce projet sont issues du Deep Learning.
+Les méthodes utilisées pour ce projet sont issues du Deep Learning, leurs implémentation a été faites sous Python avec comme environnement pour les librairies les plus utilisées :
+
+| Librairie        | Version    |
+| ------------- |:-------------:| 
+| numpy         | 1.17.2        | 
+| pandas        | 0.24.2        |    
+| scikit-image  | 0.14.2        |   
+| tensorflow    | 1.14.0        |   
+| keras         | 2.2.4         |   
+
 
 ## Données
-Les données sont des images IRM 3D 128x128x128 voxels, acquises par le RMSB, et représentent l'état de la maladie d'une souris 
+Les données sont des images IRM 3D 128x128x128 voxels, acquises par le RMSB, représentent l'état de la maladie d'une souris 
 à un instant donné. 
 
-Les images peuvent être visualiser à l'aide du logiciel Fiji et sous différents axes (axial, coronal ou sagittal). 
-Elles ont été acquises suivant le plan axial mais nous les avons traitées dans le sens coronal => meilleur visualisation des poumons.
+Les images peuvent être visualiser à l'aide du logiciel [Fiji](https://fiji.sc/) et sous différents axes (axial, coronal ou sagittal). 
+Elles ont été acquises suivant le plan coronal et nous les avons traitées dans le sens coronal => meilleur visualisation des poumons.
 
 Il est possible de définir trois types d'image : 
 * Souris saine : aucune métastase présente dans les poumons.
@@ -94,12 +103,3 @@ python main.py
 
 
 ### Environnement Python
-Pour les librairies les plus utilisées :
-
-| Librairie        | Version    |
-| ------------- |:-------------:| 
-| numpy         | 1.17.2        | 
-| pandas        | 0.24.2        |    
-| scikit-image  | 0.14.2        |   
-| tensorflow    | 1.14.0        |   
-| keras         | 2.2.4         |   
