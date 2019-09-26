@@ -43,11 +43,14 @@ Pour le test :
 * 3 souris annotées pour la segmentation des poumons et des métastases. 
 
 ## Projet
-Le dossier du projet est disponible sur /mnt/cbib/Projet_Detection_Metastase_Souris. Pour le récuperer : 
+Le dossier du projet est disponible sur /mnt/cbib/Projet_Detection_Metastase_Souris. Celui-ci contient les données et les notebooks. Les scripts sont sur ce Git, il s'agit donc de le télécharger en le nommant "Antoine_Git" et le placer dans le dossier Projet_Detection_Metastase_Souris. Un example d'architecture est illustrée ci-dessous ainsi que la commande pour récupérer les données sur le serveur. 
 
 ```
 scp -r adresse_connexion_serveur_ssh:/mnt/cbib/Projet_Detection_Metastase_Souris chemin_ou_le_placer/
 ```
+
+<img src="Image/architecture.png" width="500">
+
 
 L'architecture de ce dossier est la suivante : 
 
@@ -110,19 +113,18 @@ Pour utiliser les scripts sur Pycharm, il suffit de spécifier le path (commente
 ROOT_DIR = os.path.abspath("le_chemin_d'acces_en_entier/Projet_Detection_Metastase_Souris/") 
 ```
 
+Je conseille d'utiliser les scripts de cette manière, les différents fonctions sont relativement expliquée, et le code est dans l'ordre.
+
 ### Avec terminal
-Pour lancer les script, il faut se placer dans le dossier Projet_Detection_Metastase_Souris puis lancer le script désiré : 
+Pour lancer les script, il faut se placer dans le dossier Projet_Detection_Metastase_Souris puis lancer le script désiré. Il s'agira d'inverser les commentaire en chaque début de script. ("./DATA/", etc..)
+
 ```
 cd le_chemin_d'acces/Projet_Detection_Metastase_Souris
 ```
 ```
 python main.py
 ```
-
-
-### Résultats de segmentations
-
-
+L'inconvénient de cette méthode est que si l'on lance par exemple le script train_model_poum.py, l'ensemble des réseaux vont se réentrainer. C'est pourquoi je conseille des les aborder pas à pas avec la console python. 
 
 
 
@@ -135,3 +137,14 @@ python main.py
 * Optimiser le seuil en fin de U-Net (ici j'utilise 0.5 pour classifier) et pourquoi pas considérer un seuil d'aire minimale pour la segmentation des poumons pour enlever des faux positifs. 
 
 * Construire une courbe d'apprentissage afin d'illuster la pertinence d'annoter des images sur la qualité de la segmentation. Par exemple un graphe avec en abscisse les souris de 1 à 27, en ordonnée la moyenne de l'IoU sur l'ensemble des slices, et ce pour les 3 souris test. 
+
+
+
+
+### Résultats de segmentations
+
+## Poumons ##
+<img src="Image/bestresultpoum.png" width="700">
+
+## Métastases ##
+<img src="Image/bestresultmeta.png" width="700">
