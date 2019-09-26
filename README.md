@@ -68,17 +68,16 @@ L'architecture de ce dossier est la suivante :
   * Filtre débruiteur : Application de filtre 3x3 max/mean/median sur les images de souris. 
   * PL33 : Image d'une souris avec encore un autre contraste prise en axiale. 
 * Data_Synthétique :
-  * 
-  *
-  *
-  *
-
-* Notebook :
-  *
-  *
-  *
-  *
-  *
+  * Detect_Seg : Segmentation de souris saines par la méthode detection - segmentation avec le U-Net. 
+  * Multi-Axes : Segmentation de souris saines par la multi-axiales avec le vote 1. 
+  * Full_Meta : Tous les masques de métastases (uniques) - un masque par métastase. Je les avais annoté de cette manière pour appliquer la méthode des Mask-Rcnn. 
+  * Nouvelles_Images : Images synthétiques construites à partir des poumons segmentés dans Detect_Seg et des métastases de Full_Meta. 
+* Notebook : Ces notebooks sont présents pour une meilleure compréhension des scripts. 
+  * Amélioration_Poumon : Modèle de segmentation élaborée suite à l'étude de la segmentation des poumons (pour améliorer la segmentation des souris avec de grosses métastases). 
+  * CNN-LSTM : Modèle de segmentation "3D" où l'on considère l'ensemble des slices d'une souris comme une vidéo avec de la temporalité. 
+  * Creation_donnée : Démarche utilisée pour construire des données synthétiques.
+  * Segmentation_Metastase_3 : Démarche finale effectuée pour construire un modèle de segmentation des métastases (pas présent sur les scripts).
+  * Stats_Segmentation : Première étude statistques sur les résultats de segmentation des poumons et des métastases. 
 
 
 
