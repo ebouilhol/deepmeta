@@ -21,7 +21,7 @@ import utils
 import data
 
 # Choix de path
-console = True
+console = False
 if console:
     ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/deepmeta-master/")
     sys.path.append(ROOT_DIR)
