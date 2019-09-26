@@ -120,12 +120,6 @@ python main.py
 ```
 
 
-### Résultats de segmentations
-
-<img src="Image/bestresultpoum.png" width="500">
-
-<img src="Image/bestresultmeta.png" width="500">
-
 
 
 
@@ -138,3 +132,12 @@ python main.py
 * Optimiser le seuil en fin de U-Net (ici j'utilise 0.5 pour classifier) et pourquoi pas considérer un seuil d'aire minimale pour la segmentation des poumons pour enlever des faux positifs. 
 
 * Construire une courbe d'apprentissage afin d'illuster la pertinence d'annoter des images sur la qualité de la segmentation. Par exemple un graphe avec en abscisse les souris de 1 à 27, en ordonnée la moyenne de l'IoU sur l'ensemble des slices, et ce pour les 3 souris test. 
+
+
+
+
+### Résultats de segmentations
+
+<img src="Image/bestresultpoum.png" width="700">
+
+<img src="Image/bestresultmeta.png" width="700">
