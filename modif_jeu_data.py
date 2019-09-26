@@ -14,11 +14,11 @@ import sys
 # Choix de path
 console = False
 if console:
-    ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
+    ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/deepmeta-master/")
     sys.path.append(ROOT_DIR)
-    PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
+    PATH_DATA = os.path.join(ROOT_DIR, "../DATA/")
 else:
-    PATH_DATA = "./DATA/"
+    PATH_DATA = "../DATA/"
 
 
 

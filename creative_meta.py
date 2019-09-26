@@ -12,17 +12,17 @@ from skimage import io
 # Choix de path
 console = False
 if console:
-    ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
+    ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/deepmeta-master/")
     sys.path.append(ROOT_DIR)
-    PATH_GIT = os.path.join(ROOT_DIR, "./Antoine_Git/")
-    PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
-    PATH_Data = os.path.join(ROOT_DIR, "./Data/")
-    PATH_Synth = os.path.join(ROOT_DIR, "./Data_Synthetique/")
+    PATH_GIT = os.path.join(ROOT_DIR, "../deepmeta-master/")
+    PATH_DATA = os.path.join(ROOT_DIR, "../DATA/")
+    PATH_Data = os.path.join(ROOT_DIR, "../Data/")
+    PATH_Synth = os.path.join(ROOT_DIR, "../Data_Synthetique/")
 else:
-    PATH_GIT = "./Antoine_Git/"
-    PATH_DATA = "./DATA/"
-    PATH_Data = "./Data/"
-    PATH_Synth = "./Data_Synthetique/"
+    PATH_GIT = "../deepmeta-master/"
+    PATH_DATA = "../DATA/"
+    PATH_Data = "../Data/"
+    PATH_Synth = "../Data_Synthetique/"
 
 
 ##########################################################################################

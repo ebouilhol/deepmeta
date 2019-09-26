@@ -12,13 +12,13 @@ import sys
 # Choix de path
 console = False
 if console:
-    ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
+    ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/deepmeta-master/")
     sys.path.append(ROOT_DIR)
-    PATH_GIT = os.path.join(ROOT_DIR, "./Antoine_Git/")
-    PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
+    PATH_GIT = os.path.join(ROOT_DIR, "../deepmeta-master/")
+    PATH_DATA = os.path.join(ROOT_DIR, "../DATA/")
 else:
-    PATH_GIT = "./Antoine_Git/"
-    PATH_DATA = "./DATA/"
+    PATH_GIT = "../deepmeta-master/"
+    PATH_DATA = "../DATA/"
 
 
 ### Optimisation du batch size à utiliser pour le U-Net ###

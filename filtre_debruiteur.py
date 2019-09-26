@@ -9,13 +9,13 @@ import cv2
 # Choix de path
 console = False
 if console:
-    ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
+    ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/deepmeta-master/")
     sys.path.append(ROOT_DIR)
-    PATH_Data_contr = os.path.join(ROOT_DIR, "./Data_contraste/")
-    PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
+    PATH_Data_contr = os.path.join(ROOT_DIR, "../Data_contraste/")
+    PATH_DATA = os.path.join(ROOT_DIR, "../DATA/")
 else:
-    PATH_Data_contr = "./Data_contraste/"
-    PATH_DATA = "./DATA/"
+    PATH_Data_contr = "../Data_contraste/"
+    PATH_DATA = "../DATA/"
 
 path_souris = os.path.join(PATH_DATA, "Poumons/Souris/")
 path_mask = os.path.join(PATH_DATA, "Poumons/Masques/")
