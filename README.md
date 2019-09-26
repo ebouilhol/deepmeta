@@ -122,6 +122,9 @@ python main.py
 
 ### Résultats de segmentations
 
+<img src="Image/bestresultpoum.png" width="500">
+
+<img src="Image/bestresultmeta.png" width="500">
 
 
 
