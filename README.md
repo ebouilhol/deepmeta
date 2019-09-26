@@ -73,7 +73,7 @@ L'architecture de ce dossier est la suivante :
   * Full_Meta : Tous les masques de métastases (uniques) - un masque par métastase. Je les avais annoté de cette manière pour appliquer la méthode des Mask-Rcnn. 
   * Nouvelles_Images : Images synthétiques construites à partir des poumons segmentés dans Detect_Seg et des métastases de Full_Meta. 
 * deepmeta-master : 
-  * Ensemble des script python qui sont présentés dans la partie suivante.
+  * Ensemble des script python qui sont présentés dans la partie suivante (script de ce git).
   * Dossiers - Poumons / Métastases : les modèles construits, résultats de segmentation et statistique sur les résultats.
 * Notebook : Ces notebooks sont présents pour une meilleure compréhension des scripts. 
   * Amélioration_Poumon : Modèle de segmentation élaborée suite à l'étude de la segmentation des poumons (pour améliorer la segmentation des souris avec de grosses métastases). 
