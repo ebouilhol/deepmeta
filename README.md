@@ -17,7 +17,7 @@ Les méthodes utilisées pour ce projet sont issues du Deep Learning, leurs impl
 Les données sont des images IRM 3D 128x128x128 voxels, acquises par le RMSB, représentent l'état de la maladie d'une souris 
 à un instant donné. 
 
-Les images peuvent être visualiser à l'aide du logiciel [Fiji](https://fiji.sc/) et sous différents axes (axial, coronal ou sagittal). 
+Les images peuvent être visualisées à l'aide du logiciel [Fiji](https://fiji.sc/) et sous différents axes (axial, coronal ou sagittal). 
 Elles ont été acquises suivant le plan coronal et nous les avons traitées dans le sens coronal => meilleur visualisation des poumons.
 
 <img src="Image/data_paint2.png" width="500">
