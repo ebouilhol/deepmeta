@@ -3,23 +3,23 @@ import os
 import numpy as np
 import sys
 
-ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
-sys.path.append(ROOT_DIR)
 
-# PATH_GIT = "./Antoine_Git/"
-PATH_GIT = os.path.join(ROOT_DIR, "./Antoine_Git/")
-
-# PATH_DATA = "./DATA/"
-PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
-
-# PATH_Data = "./Data/"
-PATH_Data = os.path.join(ROOT_DIR, "./Data/")
-
-# PATH_Synth = "./Data_Synthetique/"
-PATH_Synth = os.path.join(ROOT_DIR, "./Data_Synthetique/")
-
-# PATH_Data_contr = "./Data_contraste/"
-PATH_Data_contr = os.path.join(ROOT_DIR, "./Data_contraste/")
+# Choix de path
+console = False
+if console:
+    ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
+    sys.path.append(ROOT_DIR)
+    PATH_GIT = os.path.join(ROOT_DIR, "./Antoine_Git/")
+    PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
+    PATH_Data = os.path.join(ROOT_DIR, "./Data/")
+    PATH_Synth = os.path.join(ROOT_DIR, "./Data_Synthetique/")
+    PATH_Data_contr = os.path.join(ROOT_DIR, "./Data_contraste/")
+else:
+    PATH_GIT = "./Antoine_Git/"
+    PATH_DATA = "./DATA/"
+    PATH_Data = "./Data/"
+    PATH_Synth = "./Data_Synthetique/"
+    PATH_Data_contr = "./Data_contraste/"
 
 
 # Souris Test :
@@ -132,7 +132,7 @@ path_model_corronal = os.path.join(PATH_GIT, "Poumons/model/model_corronal.h5")
 # Application de la méthode avec les différents votes pour chaque souris :
 
 list_vote = ["Vote_1/", "Vote_2/", "Vote_3/"]
-vote = [1, 2 ,3]
+vote = [1, 2, 3]
 k = 0
 
 for i in list_vote:
@@ -309,6 +309,4 @@ model.seg_meta_poum_seg(souris_28, path_model_seg_poum, path_model_seg_meta, pat
 
 name_folder = "souris_56"
 model.seg_meta_poum_seg(souris_56, path_model_seg_poum, path_model_seg_meta, path_result, name_folder)
-
-
 

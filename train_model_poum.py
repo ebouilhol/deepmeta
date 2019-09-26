@@ -16,17 +16,19 @@ import utils
 import sys
 
 
-ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
-sys.path.append(ROOT_DIR)
+# Choix de path
+console = False
+if console:
+    ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
+    sys.path.append(ROOT_DIR)
+    PATH_GIT = os.path.join(ROOT_DIR, "./Antoine_Git/")
+    PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
+    PATH_Synth = os.path.join(ROOT_DIR, "./Data_Synthetique/")
+else:
+    PATH_GIT = "./Antoine_Git/"
+    PATH_DATA = "./DATA/"
+    PATH_Synth = "./Data_Synthetique/"
 
-# PATH_GIT = "./Antoine_Git/"
-PATH_GIT = os.path.join(ROOT_DIR, "./Antoine_Git/")
-
-# PATH_DATA = "./DATA/"
-PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
-
-# PATH_Synth = "./Data_Synthetique/"
-PATH_Synth = os.path.join(ROOT_DIR, "./Data_Synthetique/")
 
 path_souris = os.path.join(PATH_DATA, "Poumons/Souris/")
 path_mask = os.path.join(PATH_DATA, "Poumons/Masques/")

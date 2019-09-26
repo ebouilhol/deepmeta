@@ -7,14 +7,17 @@ import numpy as np
 import os
 import sys
 
-ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
-sys.path.append(ROOT_DIR)
+# Choix de path
+console = False
+if console:
+    ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
+    sys.path.append(ROOT_DIR)
+    PATH_GIT = os.path.join(ROOT_DIR, "./Antoine_Git/")
+    PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
+else:
+    PATH_GIT = "./Antoine_Git/"
+    PATH_DATA = "./DATA/"
 
-# PATH_GIT = "./Antoine_Git/"
-PATH_GIT = os.path.join(ROOT_DIR, "./Antoine_Git/")
-
-# PATH_DATA = "./DATA/"
-PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
 
 ######## Visualisation des features maps ########
 

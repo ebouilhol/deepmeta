@@ -8,14 +8,16 @@ import keras
 import os
 import sys
 
-## Path ##
-ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
-sys.path.append(ROOT_DIR)
-
-# PATH_DATA = "./DATA/"
-PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
-# PATH_GIT = "./Antoine_Git/"
-PATH_GIT = os.path.join(ROOT_DIR, "./Antoine_Git/")
+# Choix de path
+console = False
+if console:
+    ROOT_DIR = os.path.abspath("/home/achauviere/Bureau/Projet_Detection_Metastase_Souris/")
+    sys.path.append(ROOT_DIR)
+    PATH_GIT = os.path.join(ROOT_DIR, "./Antoine_Git/")
+    PATH_DATA = os.path.join(ROOT_DIR, "./DATA/")
+else:
+    PATH_GIT = "./Antoine_Git/"
+    PATH_DATA = "./DATA/"
 
 path_result = os.path.join(PATH_GIT, "Poumons/model/")
 path_small_Unet = os.path.join(PATH_GIT, "Poumons/model/small_unet.h5")
