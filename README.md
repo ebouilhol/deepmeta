@@ -134,4 +134,4 @@ python main.py
 
 * Optimiser le seuil en fin de U-Net (ici j'utilise 0.5 pour classifier) et pourquoi pas considérer un seuil d'aire minimale pour la segmentation des poumons pour enlever des faux positifs. 
 
-* Construire une courbe d'apprentissage afin d'illuster la pertinence d'annoter des images sur la qualité de la segmentation. Par exemple un graphe avec en absisse les souris de 1 à 27, en ordonnée la moyenne de l'IoU sur l'ensemble des slices, et ce pour les 3 souris test. 
+* Construire une courbe d'apprentissage afin d'illuster la pertinence d'annoter des images sur la qualité de la segmentation. Par exemple un graphe avec en abscisse les souris de 1 à 27, en ordonnée la moyenne de l'IoU sur l'ensemble des slices, et ce pour les 3 souris test. 
