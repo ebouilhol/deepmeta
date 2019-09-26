@@ -138,6 +138,8 @@ python main.py
 
 ### Résultats de segmentations
 
+## Poumons ##
 <img src="Image/bestresultpoum.png" width="700">
 
+## Métastases ##
 <img src="Image/bestresultmeta.png" width="700">
