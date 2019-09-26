@@ -2,7 +2,7 @@
 Ce projet à pour but de construire des modèles de segmentation automatique d'images IRM pour la détection des poumons et
 métastases pulmonaires dans le cas du petit animal, la souris. 
 
-Les méthodes utilisées pour ce projet sont issues du Deep Learning, leurs implémentations a été faites sous Python avec comme environnement pour les librairies les plus utilisées :
+Les méthodes utilisées pour ce projet sont issues du Deep Learning, leurs implémentations a été faites sous Python (3.6) avec comme environnement pour les librairies les plus utilisées :
 
 | Librairie        | Version    |
 | ------------- |:-------------:| 
@@ -43,7 +43,7 @@ Pour le test :
 * 3 souris annotées pour la segmentation des poumons et des métastases. 
 
 ## Projet
-Le dossier du projet est disponible sur /mnt/cbib/Projet_Detection_Metastase_Souris. Celui-ci contient les données et les notebooks. Les scripts sont sur ce Git, il s'agit donc de le télécharger en le nommant "Antoine_Git" et le placer dans le dossier Projet_Detection_Metastase_Souris. Un example d'architecture est illustrée ci-dessous ainsi que la commande pour récupérer les données sur le serveur. 
+Le dossier du projet est disponible sur /mnt/cbib/Projet_Detection_Metastase_Souris. Celui-ci contient les données et les notebooks. Les scripts sont sur ce Git, il s'agit donc de le télécharger (deepmeta-master) et le placer dans le dossier Projet_Detection_Metastase_Souris. Un example d'architecture est illustrée ci-dessous ainsi que la commande pour récupérer les données sur le serveur. 
 
 ```
 scp -r adresse_connexion_serveur_ssh:/mnt/cbib/Projet_Detection_Metastase_Souris chemin_ou_le_placer/
@@ -55,9 +55,6 @@ scp -r adresse_connexion_serveur_ssh:/mnt/cbib/Projet_Detection_Metastase_Souris
 L'architecture de ce dossier est la suivante : 
 
 **Projet_Detection_Metastase_Souris**
-* Antoine_Git : 
-  * Ensemble des script python qui sont présentés dans la partie suivante.
-  * Dossiers - Poumons / Métastases : les modèles construits, résultats de segmentation et statistique sur les résultats.
 * Data : L'ensemble des données brutes acquis par le RMSB contenant deux groupes de souris iL34_1c et LacZ.
 * DATA : deux dossier - Poumons et Métastases : 
   * Souris : souris.tif qui ont été annotés pour la segmentation de l'objet d'intérêt.
@@ -75,6 +72,9 @@ L'architecture de ce dossier est la suivante :
   * Multi-Axes : Segmentation de souris saines par la multi-axiales avec le vote 1. 
   * Full_Meta : Tous les masques de métastases (uniques) - un masque par métastase. Je les avais annoté de cette manière pour appliquer la méthode des Mask-Rcnn. 
   * Nouvelles_Images : Images synthétiques construites à partir des poumons segmentés dans Detect_Seg et des métastases de Full_Meta. 
+* deepmeta-master : 
+  * Ensemble des script python qui sont présentés dans la partie suivante (script de ce git).
+  * Dossiers - Poumons / Métastases : les modèles construits, résultats de segmentation et statistique sur les résultats.
 * Notebook : Ces notebooks sont présents pour une meilleure compréhension des scripts. 
   * Amélioration_Poumon : Modèle de segmentation élaborée suite à l'étude de la segmentation des poumons (pour améliorer la segmentation des souris avec de grosses métastases). 
   * CNN-LSTM : Modèle de segmentation "3D" où l'on considère l'ensemble des slices d'une souris comme une vidéo avec de la temporalité. 
