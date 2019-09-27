@@ -67,7 +67,7 @@ model_seg.save(os.path.join(PATH_GIT, "Metastases/model/unet_test.h5"))
 
 path_lab_poum = os.path.join(PATH_DATA, "Poumons/Label/")
 
-data = []
+data1 = []
 label_meta = []
 label_poum = []
 ind = []
@@ -77,17 +77,17 @@ for i in np.arange(len(tab)):
         if tab[i, 6] != 0:
             im = io.imread(path_img + 'img_'+str(i)+'.tif', plugin='tifffile')
             img_adapteq = exposure.equalize_adapthist(im, clip_limit=0.03)
-            data.append(img_adapteq)
+            data1.append(img_adapteq)
             label_meta.append(io.imread(path_lab + 'm_'+str(i)+'.tif'))
             label_poum.append(io.imread(path_lab_poum + 'm_'+str(i)+'.tif'))
             ind.append(i)
 
-data = np.array(data)
+data1 = np.array(data1)
 label_meta = np.array(label_meta, dtype=np.bool)
 label_poum = np.array(label_poum, dtype=np.bool)
 ind = np.array(ind)
 
-data = (data - data.min())*255/(data.max()-data.min())
+data1 = (data1 - data1.min())*255/(data1.max()-data1.min())
 
 N = np.arange(len(ind)) ; N_sample = sample(list(N), len(N))
 
@@ -118,7 +118,7 @@ model_seg2.save(os.path.join(PATH_GIT, "Metastases/model/unet_test2.h5"))
 ####################################################################################
 
 
-Data, Label, ind = data.create_data_meta(path_img, path_lab, tab)
+Data, Label, ind = data.create_data_meta(path_img, path_lab, tab) #renommer variable
 
 newData, newPoum, newMeta = data.recup_new_data()
 
